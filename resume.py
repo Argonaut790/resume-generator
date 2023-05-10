@@ -6,6 +6,7 @@ from src.Content import Component
 from src.Skill import Skill
 from src.Style import *
 import src.data as data
+from src.gui import gui
 
 def Heading(document) -> None:
     #First Line
@@ -133,6 +134,10 @@ def Skills(document) -> None:
     SkillStyle(table)
 
 def main() -> None:
+    # Call gui
+    user_data = gui()
+    print(user_data)
+
     # Create Document
     document = Document()
     style = document.styles["Normal"]
