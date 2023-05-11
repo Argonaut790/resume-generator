@@ -1,13 +1,13 @@
 # Create data Object
-# from src.classes.Heading import Heading
-# from src.classes.Objective import Objective
-# from src.classes.Content import Component
-# from src.classes.Skill import Skill
+from src.classes.Heading import Heading
+from src.classes.Objective import Objective
+from src.classes.Content import Component
+from src.classes.Skill import Skill
 
-from classes.Heading import Heading
-from classes.Objective import Objective
-from classes.Content import Component
-from classes.Skill import Skill
+# from classes.Heading import Heading
+# from classes.Objective import Objective
+# from classes.Content import Component
+# from classes.Skill import Skill
 
 
 def create_heading_object(li:list) -> Component:

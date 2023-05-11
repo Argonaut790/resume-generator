@@ -1,5 +1,5 @@
 from docx import Document
-from docx.shared import Pt, Cm
+from docx.shared import Pt, Cm, Mm
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 import subprocess
 
@@ -154,8 +154,11 @@ def main() -> None:
     for section in sections:
         section.top_margin = Cm(1)
         section.bottom_margin = Cm(1)
-        section.left_margin = Cm(1)
-        section.right_margin = Cm(1)
+        section.left_margin = Mm(7.5)
+        section.right_margin = Mm(7.5)
+        # A4 size
+        section.page_height = Mm(297)
+        section.page_width = Mm(210)
 
     Heading(document, heading_data)
     Objective(document, objective_data)
