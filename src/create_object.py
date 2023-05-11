@@ -1,8 +1,14 @@
 # Create data Object
-from src.classes.Heading import Heading
-from src.classes.Objective import Objective
-from src.classes.Content import Component
-from src.classes.Skill import Skill
+# from src.classes.Heading import Heading
+# from src.classes.Objective import Objective
+# from src.classes.Content import Component
+# from src.classes.Skill import Skill
+
+from classes.Heading import Heading
+from classes.Objective import Objective
+from classes.Content import Component
+from classes.Skill import Skill
+
 
 def create_heading_object(li:list) -> Component:
     if len(li) != 6:
@@ -112,7 +118,8 @@ def create_experience_object(li:list) -> list:
 
 def create_skill_object(li:list) -> list:
     if len(li)%2:
-        raise ValueError("Skill list must have 3 elements")
+        raise ValueError("Skill list must have 2 elements")
+    print(f"list = {li}")
     skill_list = []
     for i in range(0, len(li), 2):
         if not li[i]:
@@ -120,6 +127,8 @@ def create_skill_object(li:list) -> list:
         else:
             skill_category = li[i]
         if not li[i+1]:
-            skill_content = ["[Skill 1]", "[Skill 2]"]
+            skill_content = "[Skill 1], [Skill 2]"
+        else:
+            skill_content = li[i+1]
         skill_list.append(Skill(skill_category, skill_content))
     return skill_list

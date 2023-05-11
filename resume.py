@@ -121,7 +121,7 @@ def Skills(document, skills_content) -> None:
         table.add_row()
         heading_cells = table.rows[-1].cells
         heading_cells[0].text = skill.category
-        heading_cells[1].text = ", ".join(skill.list)
+        heading_cells[1].text = (skill.list)
         SkillHeadingStyle(heading_cells[0].paragraphs[0])
 
     SkillStyle(table)
@@ -165,17 +165,17 @@ def main() -> None:
     Skills(document, skills_data)
 
     # Meta Data
-    document.core_properties.author = data.NAME
-    document.core_properties.title = data.NAME + " Resume"
+    document.core_properties.author = heading_data.name
+    document.core_properties.title = heading_data.name + " Resume"
     document.core_properties.subject = "Resume"
-    document.core_properties.keywords = "Resume, CV, " + data.NAME
+    document.core_properties.keywords = "Resume, CV, " + heading_data.name
     document.core_properties.category = "Resume"
     document.core_properties.language = "en-US"
     
     # Save File
     try:
-        document.save(data.NAME + "_resume.docx")
-        shell_process = subprocess.Popen([data.NAME + "_resume.docx"],shell=True) 
+        document.save(heading_data.name + "_resume.docx")
+        shell_process = subprocess.Popen([heading_data.name + "_resume.docx"],shell=True) 
         shell_process.wait()
         print("File saved successfully")
     except:

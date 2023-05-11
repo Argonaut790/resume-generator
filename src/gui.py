@@ -1,9 +1,11 @@
 import PySimpleGUI as sg
 import pathlib
 import webbrowser
+import os
 
-from src.create_object import *
-
+# from src.create_object import *
+from create_object import *
+from LoadData import LoadData
 # Reference:
 # 1. Scroll Bar Update
 # https://stackoverflow.com/questions/65811804/how-to-automatically-update-the-pysimplegui-column-scroll-bar
@@ -39,6 +41,8 @@ experience_row_counter = 0
 experience_row_number_view = 1
 skills_row_counter = 0
 skills_row_number_view = 1
+
+KEYS_TO_CLEAR = ["NAME", "NICKNAME", "TELEPHONE", "EMAIL", "GITHUBLINK", "WEBLINK", "OBJECTIVE", "EDUCATION_NAME", "EDUCATION_DEGREE", "EDUCATION_DURATION", "EDUCATION_LIST", "PJ_NAME", "PJ_DURATION", "PJ_LIST", "EXP_NAME", "EXP_DURATION", "EXP_SUBTITLE", "EXP_LIST", "SKILL_CATEGORY", "SKILL_LIST"]
 
 # add button which can expand another objective input field
 def create_education(row_counter, row_number_view) -> list:
@@ -97,8 +101,8 @@ def gui() -> dict:
     intro_layout = [[sg.Column([[sg.Image(str(pathlib.Path().resolve()) + "\\assets\icon.png")]], size=(110,110)), sg.Column(instruction_layout)]]
 
     browse_old_data_layout = [[sg.Text('Browse Old Data', font='Arial 14 bold')],
-                            [sg.Text("Please select the old data file", size=(21,1)), sg.InputText(key="OLDDATA", size=(50,1), use_readonly_for_disable=True, disabled=True, background_color=sg.theme_background_color(), text_color="black"), sg.FileBrowse(key="BROWSE", size=(8,1)),
-                            sg.Button('Load', size=(8,1))]]
+                            [sg.Text("Please select the old data file", size=(21,1)), sg.InputText(key="OLD_DATA_PATH", size=(50,1), use_readonly_for_disable=True, disabled=True, background_color=sg.theme_background_color(), text_color="black"), sg.FileBrowse(key="BROWSE_DATA", size=(8,1)),
+                            sg.Button('Load', size=(8,1), key="LOAD_DATA", tooltip="Load Old Data")]]
     
     heading_layout = [  [sg.Text('Heading', font='Arial 14 bold')],
                 [sg.Text('Name', size=(8,1)), sg.InputText(key="NAME", size=(25,1), ), sg.Text('Nickname', size=(8,1)), sg.InputText(key="NICKNAME", size=(25,1))],
@@ -137,7 +141,7 @@ def gui() -> dict:
                 sg.Column(sideproject_layout)],
                 [sg.Column(experience_layout),
                 sg.Column(skills_layout)],
-              [sg.Button('Generate', size=(8,1)), sg.Button('Cancel')],
+              [sg.Button('Generate', size=(8,1)), sg.Button('Cancel'), sg.Button("Clean", key="CLEAN"), sg.Button("Delete Data", key="DELETE_DATA" , tooltip="Delete All Input Data"), sg.Text("", key="RESPONSE")],
               copyright_layout]
 
     # Create the Window
@@ -161,18 +165,56 @@ def gui() -> dict:
     experience_content = []
     skills_content = []
 
+    # Get env data
+    if os.path.exists("env data.txt"):
+        f = open("env data.txt", "r")
+        last_modified_filename = f.readline()
+        f.close()
+    else:
+        last_modified_filename = ""
+
     # Event Loop to process "events" and get the "values" of the inputs
     while True:
         event, values = window.read()
         if event == sg.WIN_CLOSED or event == 'Cancel': # if user closes window or clicks cancel
             return
-        if event[0].startswith("URL "):
-            url = event.split(" ")[1]
-            webbrowser.open(url)
-        if event == "OLD_DATA":
-            OLD_DATA = values["OLD_DATA"]
+        if not isinstance(event, tuple):
+            if event.startswith("URL "):
+                print(event)
+                url = event.split(" ")[1]
+                webbrowser.open(url)
+        if event == "OLD_DATA_PATH":
+            OLD_DATA = values["OLD_DATA_PATH"]
             print(OLD_DATA)
-        
+        if event == "LOAD_DATA":
+            LoadData(window, values["OLD_DATA_PATH"])
+        if event == "CLEAN":
+            for key in KEYS_TO_CLEAR:
+                window[key]('')
+            for i in range(1, education_row_counter+1):
+                window[("-EDUCATION_ROW-", i)].update(visible=False)
+                print(f"{window[('-EDUCATION_ROW-', i)].visible}")
+            for i in range(1, sideproject_row_counter+1):
+                window[("-SIDEPROJECT_ROW-", i)].update(visible=False)
+            for i in range(1, experience_row_counter+1):
+                window[("-EXPERIENCE_ROW-", i)].update(visible=False)
+            for i in range(1, skills_row_counter+1):
+                window[("-SKILLS_ROW-", i)].update(visible=False)
+            # Update Scrollbar
+            window.refresh()
+            window["-EDUCATION_ROW_PANEL-"].contents_changed()
+            window["-SIDEPROJECT_ROW_PANEL-"].contents_changed()
+            window["-EXPERIENCE_ROW_PANEL-"].contents_changed()
+            window["-SKILLS_ROW_PANEL-"].contents_changed()
+        if event == "DELETE_DATA":
+            if os.path.exists(last_modified_filename + ".txt"):
+                os.remove(last_modified_filename + ".txt")
+                print(f"{last_modified_filename}.txt Data deleted")
+            if os.path.exists(last_modified_filename + ".docx"):
+                os.remove(last_modified_filename + ".docx")
+                print(f"{last_modified_filename}.docx Data deleted")
+            window["RESPONSE"].update("Data deleted")
+        # Add and Remove Row
         if event == "-EDUCATION_ROW_ADD-":
             education_row_counter += 1
             education_row_number_view += 1
@@ -221,7 +263,7 @@ def gui() -> dict:
             window.refresh()
             window["-SKILLS_ROW_PANEL-"].contents_changed()
             skills_row_number_view -= 1
-
+        # Generate
         if event == 'Generate':
             # TODO: Check if the file is opening or not first, if opening then error to close it first
             print(values)
@@ -250,9 +292,16 @@ def gui() -> dict:
                     skills_content.append(value)
             break
     #save resume data'
-    f = open("resume.txt", "w")
-    f.write("Formal Resume Generator 2023")
+    file_name = values["NAME"] + "_resume"
+    f = open(file_name + ".txt", "w")
+    f.write("Formal Resume Generator 2023\n")
+    f.write(f"{education_row_number_view}, {sideproject_row_number_view}, {experience_row_number_view}, {skills_row_number_view}\n")
     f.write(str(values))
+    f.close()
+
+    #save last modified meta data, use to delete old data
+    f = open("env data.txt", "w")
+    f.write(file_name)
     f.close()
 
     window.close()
