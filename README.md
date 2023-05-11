@@ -28,9 +28,10 @@ This Formal Resume Generator is aim to generate a common layout but formal resum
 
 <a name='template'></a>
 ## 📃Template & Samples
+  <pre>Template:                                                         Sample:</pre>
 <div align="center">
-  <img src="./assets/Template-1.png" width="45%">
-  <img src="./assets/TSE,Hui Tung_CurriculumVitae-1.png" width="41.2%">
+  <img src="./assets/Template-1.png" width="49%">
+  <img src="./assets/TSE,Hui Tung_CurriculumVitae-1.png" width="49%">
 </div>
 
 <a name='features'></a>
