@@ -1,16 +1,15 @@
 from docx import Document
-from docx.shared import Pt, Cm, RGBColor
+from docx.shared import Pt, Cm
 from docx.enum.text import WD_ALIGN_PARAGRAPH
+import subprocess
 
-from src.Content import Component
-from src.Skill import Skill
 from src.Style import *
 import src.data as data
 from src.gui import gui
 
-def Heading(document) -> None:
+def Heading(document, heading_content) -> None:
     #First Line
-    name = document.add_paragraph(data.NAME + ", " + data.NICKNAME)
+    name = document.add_paragraph(heading_content.name + ", " + heading_content.nickname)
     name_format = name.paragraph_format
     name_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
     name_format.space_before = 0
@@ -21,21 +20,21 @@ def Heading(document) -> None:
     
     #Second Line
     secondLine = document.add_paragraph("Telephone: ")
-    secondLine.add_run(data.TELEPHONE)
+    secondLine.add_run(heading_content.phone)
     secondLine.add_run(" Email: ")
-    secondLine.add_run(data.EMAIL)
+    secondLine.add_run(heading_content.email)
     HeadingStyle(secondLine)
 
     #Third Line
     thirdLine = document.add_paragraph("Github: ")
-    thirdLine.add_run(data.GITHUBLINK)
+    thirdLine.add_run(heading_content.github)
     thirdLine.add_run(" Website: ")
-    thirdLine.add_run(data.WEBLINK)
+    thirdLine.add_run(heading_content.website)
     HeadingStyle(thirdLine)
 
-def Objective(document) -> None:
+def Objective(document, objective_content) -> None:
     heading = document.add_paragraph("OBJECTIVE")
-    objective = document.add_paragraph(data.OBJECTIVE + "\n")
+    objective = document.add_paragraph(objective_content.objective + "\n")
     objective_format = objective.paragraph_format
     objective_format.space_before = 0
     objective_format.space_after = 0
@@ -44,10 +43,7 @@ def Objective(document) -> None:
     objective.runs[0].font.size = Pt(11)
     SubHeadingStyle(heading)
 
-def Education(document) -> None:
-    # Create object list
-    education_content = []
-    education_content.append(Component(data.EDUCATION_NAME, data.EDUCATION_DURATION, data.EDUCATION_LIST, data.EDUCATION_DEGREE))
+def Education(document, education_content) -> None:
     # Subheading
     heading = document.add_paragraph("EDUCATION")
     SubHeadingStyle(heading)
@@ -57,19 +53,17 @@ def Education(document) -> None:
         table = document.add_table(rows=1, cols=2)
         heading_cells = table.rows[0].cells
         heading_cells[0].text = component.subTitle
-        heading_cells[1].text = component.duration[0] + " - " + component.duration[1]
+        if component.duration:
+            heading_cells[1].text = component.duration[0] + " - " + component.duration[1]
+        else:
+            heading_cells[1].text = ""
         TableStyle(table)
 
         ContentDescriptionStyle(document, component.description)
-
     ContentHeadingStyle(education)
 
-def SideProjects(document) -> None:
-    # Create object list
-    sideProjects_content = []
-    sideProjects_content.append(Component(data.PJ01_NAME, data.PJ01_DURATION, data.PJ01_LIST))
-    sideProjects_content.append(Component(data.PJ02_NAME, data.PJ02_DURATION, data.PJ02_LIST))
-    # Subheading
+def SideProjects(document, sideProjects_content) -> None:
+  # Subheading
     sideProjects = document.add_paragraph("SIDE PROJECT")
     SubHeadingStyle(sideProjects)
     # Add Content
@@ -79,23 +73,24 @@ def SideProjects(document) -> None:
             table = document.add_table(rows=1, cols=2)
             heading_cells = table.rows[0].cells
             heading_cells[0].text = component.subTitle
-            heading_cells[1].text = component.duration[0] + " - " + component.duration[1]
+            if component.duration:
+                heading_cells[1].text = component.duration[0] + " - " + component.duration[1]
+            else:
+                heading_cells[1].text = ""
             ContentHeadingStyle(sideProject)
         else:
             table = document.add_table(rows=1, cols=2)
             heading_cells = table.rows[0].cells
             heading_cells[0].text = component.title
-            heading_cells[1].text = component.duration[0] + " - " + component.duration[1]
+            if component.duration:
+                heading_cells[1].text = component.duration[0] + " - " + component.duration[1]
+            else:
+                heading_cells[1].text = ""
             ContentHeadingStyle(heading_cells[0].paragraphs[0])
         TableStyle(table)
         ContentDescriptionStyle(document, component.description)
 
-def Experience(document) -> None:
-    # Create object list
-    experience_content = []
-    experience_content.append(Component(data.EXP01_NAME, data.EXP01_DURATION, data.EXP01_LIST, data.EXP01_SUBTITLE))
-    experience_content.append(Component(data.EXP02_NAME, data.EXP02_DURATION, data.EXP02_LIST, data.EXP02_SUBTITLE))
-    
+def Experience(document, experience_content) -> None:
     # Subheading
     experience = document.add_paragraph("EXPERIENCE")
     SubHeadingStyle(experience)
@@ -106,18 +101,16 @@ def Experience(document) -> None:
         table = document.add_table(rows=1, cols=2)
         heading_cells = table.rows[0].cells
         heading_cells[0].text = component.subTitle
-        heading_cells[1].text = component.duration[0] + " - " + component.duration[1]
+        if component.duration:
+            heading_cells[1].text = component.duration[0] + " - " + component.duration[1]
+        else:
+            heading_cells[1].text = ""
         TableStyle(table)
         ContentHeadingStyle(experience)
         ContentDescriptionStyle(document, component.description)
         
 
-def Skills(document) -> None:
-    # Create object list
-    skills_content = []
-    skills_content.append(Skill(data.SKILL01_CATEGORY, data.SKLL01_LIST))
-    skills_content.append(Skill(data.SKILL02_CATEGORY, data.SKILL02_LIST))
-
+def Skills(document, skills_content) -> None:
     # Subheading
     skills = document.add_paragraph("SKILLS")
     SubHeadingStyle(skills)
@@ -136,7 +129,15 @@ def Skills(document) -> None:
 def main() -> None:
     # Call gui
     user_data = gui()
-    print(user_data)
+    if not user_data:
+        print("Exited")
+        return
+    heading_data = user_data[0]
+    objective_data = user_data[1]
+    education_data = user_data[2]
+    side_projects_data = user_data[3]
+    experience_data = user_data[4]
+    skills_data = user_data[5]
 
     # Create Document
     document = Document()
@@ -148,8 +149,6 @@ def main() -> None:
     font.name = "Times New Roman"
     font.size = Pt(11)
     font.bold = False
-    
-    # font.color.rgb = RGBColor(255,0,0)
 
     sections = document.sections
     for section in sections:
@@ -158,12 +157,12 @@ def main() -> None:
         section.left_margin = Cm(1)
         section.right_margin = Cm(1)
 
-    Heading(document)
-    Objective(document)
-    Education(document)
-    SideProjects(document)
-    Experience(document)
-    Skills(document)
+    Heading(document, heading_data)
+    Objective(document, objective_data)
+    Education(document, education_data)
+    SideProjects(document, side_projects_data)
+    Experience(document, experience_data)
+    Skills(document, skills_data)
 
     # Meta Data
     document.core_properties.author = data.NAME
@@ -176,9 +175,12 @@ def main() -> None:
     # Save File
     try:
         document.save(data.NAME + "_resume.docx")
+        shell_process = subprocess.Popen([data.NAME + "_resume.docx"],shell=True) 
+        shell_process.wait()
         print("File saved successfully")
     except:
         print("Error: Unable to save file")
+        print("Please close the file and try again")
 
 
 if __name__ == "__main__":

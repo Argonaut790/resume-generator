@@ -2,6 +2,8 @@ import PySimpleGUI as sg
 import pathlib
 import webbrowser
 
+from src.create_object import *
+
 # Reference:
 # 1. Scroll Bar Update
 # https://stackoverflow.com/questions/65811804/how-to-automatically-update-the-pysimplegui-column-scroll-bar
@@ -10,8 +12,8 @@ import webbrowser
 
 
 # Window size
-WINDOWSHEIGHT = 870
 WINDOWSWIDTH = 1400
+WINDOWSHEIGHT = 870
 # Column size
 FIXEDCOLUMNWIDTH = 673
 FIXEDCOLUMNHEIGHT = 120
@@ -52,8 +54,8 @@ def create_education(row_counter, row_number_view) -> list:
 def create_sideproject(row_counter, row_number_view) -> list:
     row = [sg.pin(
         sg.Column([[sg.Text(f"# {row_number_view}", font='Arial 11 bold'), sg.Button('Remove', size=(REMOVEBUTTONWIDTH,BUTTONHEIGHT), enable_events=True, key=("-SIDEPROJECT_ROW_REMOVE-", row_counter), tooltip="Delete Last Side Project Field")],
-             [sg.Text('Name', size=(FIRSTTEXTWIDTH,1)), sg.InputText(key="PJ01_NAME", size=(INPUTWIDTH,1)), sg.Text('Duration', size=(SECONDTEXTWIDTH,1)), sg.InputText(key="PJ01_DURATION", size=(INPUTWIDTH,1))],
-             [sg.Text('Description', size=(FIRSTTEXTWIDTH,1)), sg.Multiline(key="PJ01_LIST", size=(FULLWIDTH,3))]],
+             [sg.Text('Name', size=(FIRSTTEXTWIDTH,1)), sg.InputText(key="PJ_NAME", size=(INPUTWIDTH,1)), sg.Text('Duration', size=(SECONDTEXTWIDTH,1)), sg.InputText(key="PJ_DURATION", size=(INPUTWIDTH,1))],
+             [sg.Text('Description', size=(FIRSTTEXTWIDTH,1)), sg.Multiline(key="PJ_LIST", size=(FULLWIDTH,3))]],
              key=("-SIDEPROJECT_ROW-", sideproject_row_counter)
         ))]
     return row
@@ -61,9 +63,9 @@ def create_sideproject(row_counter, row_number_view) -> list:
 def create_experience(row_counter, row_number_view) -> list:
     row = [sg.pin(
         sg.Column([[sg.Text(f"# {row_number_view}", font='Arial 11 bold'), sg.Button('Remove', size=(REMOVEBUTTONWIDTH,BUTTONHEIGHT), enable_events=True, key=("-EXPERIENCE_ROW_REMOVE-", row_counter), tooltip="Delete Last Experience Field")],
-                [sg.Text('Name', size=(8,1)), sg.InputText(key="EXP_NAME", size=(25,1)), sg.Text('Duration', size=(8,1)), sg.InputText(key="EXP01_DURATION", size=(25,1))],
-                [sg.Text('Description', size=(8,1)), sg.Multiline(key="EXP01_LIST", size=(60,3))],
-                [sg.Text('Subtitle', size=(8,1)), sg.InputText(key="EXP01_SUBTITLE", size=(25,1))]],
+                [sg.Text('Name', size=(8,1)), sg.InputText(key="EXP_NAME", size=(25,1)), sg.Text('Duration', size=(8,1)), sg.InputText(key="EXP_DURATION", size=(25,1))],
+                [sg.Text('Subtitle', size=(8,1)), sg.InputText(key="EXP_SUBTITLE", size=(25,1))],
+                [sg.Text('Description', size=(8,1)), sg.Multiline(key="EXP_LIST", size=(60,3))]],
                 key=("-EXPERIENCE_ROW-", experience_row_counter)
             ))]
     return row
@@ -71,8 +73,8 @@ def create_experience(row_counter, row_number_view) -> list:
 def create_skills(row_counter, row_number_view) -> list:
     row = [sg.pin(
         sg.Column([[sg.Text(f"# {row_number_view}", font='Arial 11 bold'), sg.Button('Remove', size=(REMOVEBUTTONWIDTH,BUTTONHEIGHT), enable_events=True, key=("-SKILLS_ROW_REMOVE-", row_counter), tooltip="Delete Last Skills Field")],
-                [sg.Text('Category', size=(8,1)), sg.InputText(key="SKILL01_CATEGORY", size=(25,1))],
-                [sg.Text('List', size=(8,1)), sg.Multiline(key="SKILL01_LIST", size=(60,3))]],
+                [sg.Text('Category', size=(8,1)), sg.InputText(key="SKILL_CATEGORY", size=(25,1))],
+                [sg.Text('List', size=(8,1)), sg.Multiline(key="SKILL_LIST", size=(60,3))]],
                 key=("-SKILLS_ROW-", skills_row_counter)
             ))]
     return row
@@ -92,10 +94,10 @@ def gui() -> dict:
                              sg.Text("resume-generator", tooltip="https://github.com/Argonaut790/resume-generator.git", enable_events=True, key="URL https://github.com/Argonaut790/resume-generator.git", text_color="skyblue")],
                             [sg.Text("**Disclaimer** All The Information Won't Be Stored", text_color="red", font = ("Arial", 9))] ]
 
-    intro_layout = [[sg.Column([[sg.Image(str(pathlib.Path().resolve()) + "\src\icon (1).png")]], size=(110,110)), sg.Column(instruction_layout)]]
+    intro_layout = [[sg.Column([[sg.Image(str(pathlib.Path().resolve()) + "\\assets\icon.png")]], size=(110,110)), sg.Column(instruction_layout)]]
 
     browse_old_data_layout = [[sg.Text('Browse Old Data', font='Arial 14 bold')],
-                            [sg.Text("Please select the old data file", size=(21,1)), sg.InputText(key="OLDDATA", size=(50,1), use_readonly_for_disable=True, disabled=True, background_color=sg.theme_background_color(), text_color="black"), sg.FileBrowse(),
+                            [sg.Text("Please select the old data file", size=(21,1)), sg.InputText(key="OLDDATA", size=(50,1), use_readonly_for_disable=True, disabled=True, background_color=sg.theme_background_color(), text_color="black"), sg.FileBrowse(key="BROWSE", size=(8,1)),
                             sg.Button('Load', size=(8,1))]]
     
     heading_layout = [  [sg.Text('Heading', font='Arial 14 bold')],
@@ -126,7 +128,7 @@ def gui() -> dict:
     copyright_layout = [[sg.Text("Copyright 2023, Formal Resume Generator, Tse Hui Tung", text_color="gray", font=("mono", 8)),]]
 
     # All the stuff inside your window.
-    layout = [ [sg.Menu(menu_layout, background_color='white', tearoff=False, text_color='black') ],
+    layout = [ [sg.Menu(menu_layout, background_color='white', tearoff=False, text_color='black', key="-MENU-") ],
                 intro_layout,
                 browse_old_data_layout,
                 [sg.Column(heading_layout, size=(FIXEDCOLUMNWIDTH, FIXEDCOLUMNHEIGHT)),
@@ -139,7 +141,7 @@ def gui() -> dict:
               copyright_layout]
 
     # Create the Window
-    window = sg.Window(f'Formal Resume Generator v{VERSION}', layout, size=(WINDOWSWIDTH, WINDOWSHEIGHT), font=font, icon=str(pathlib.Path().resolve()) + "\src\icon.ico", margins=(10,10))
+    window = sg.Window(f'Formal Resume Generator v{VERSION}', layout, size=(WINDOWSWIDTH, WINDOWSHEIGHT), font=font, icon=str(pathlib.Path().resolve()) + "\\assets\icon.ico", margins=(10,10))
 
     # Initiate global variables
     global education_row_counter
@@ -151,11 +153,19 @@ def gui() -> dict:
     global skills_row_counter
     global skills_row_number_view
 
+    # Object list
+    heading_content = []
+    objective_content = []
+    education_content = []
+    sideproject_content = []
+    experience_content = []
+    skills_content = []
+
     # Event Loop to process "events" and get the "values" of the inputs
     while True:
         event, values = window.read()
         if event == sg.WIN_CLOSED or event == 'Cancel': # if user closes window or clicks cancel
-            break
+            return
         if event[0].startswith("URL "):
             url = event.split(" ")[1]
             webbrowser.open(url)
@@ -214,10 +224,39 @@ def gui() -> dict:
 
         if event == 'Generate':
             # TODO: Check if the file is opening or not first, if opening then error to close it first
+            print(values)
+            for key, value in values.items():
+                if key == "NAME":
+                    heading_content.append(value)
+                elif key == "NICKNAME":
+                    heading_content.append(value)
+                elif key == "TELEPHONE":
+                    heading_content.append(value)
+                elif key == "EMAIL":
+                    heading_content.append(value)
+                elif key == "GITHUBLINK":
+                    heading_content.append(value)
+                elif key == "WEBLINK":
+                    heading_content.append(value)
+                elif key == "OBJECTIVE":
+                    objective_content.append(value)
+                elif key.startswith("EDUCATION"):
+                    education_content.append(value)
+                elif key.startswith("PJ"):
+                    sideproject_content.append(value)
+                elif key.startswith("EXP"):
+                    experience_content.append(value)
+                elif key.startswith("SKILL"):
+                    skills_content.append(value)
             break
+    #save resume data'
+    f = open("resume.txt", "w")
+    f.write("Formal Resume Generator 2023")
+    f.write(str(values))
+    f.close()
 
     window.close()
-    return values
+    return create_heading_object(heading_content), create_objective_object(objective_content), create_education_object(education_content), create_side_projects_object(sideproject_content), create_experience_object(experience_content), create_skill_object(skills_content)
 
 if __name__ == "__main__":
     gui()

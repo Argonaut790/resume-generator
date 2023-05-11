@@ -1,6 +1,6 @@
 # resume-generator
 
-python 3.11
+python 3.9 or abocve
 pip 23.1.2
 
 # Installation
