@@ -1,8 +1,8 @@
 Formal Resume Generator 2023
-2, 2, 2, 2
+4, 1, 1, 1
 {'NAME': '', 'NICKNAME': '', 'TELEPHONE': '', 'EMAIL': '', 'GITHUBLINK': '', 'WEBLINK': ''}
 {'OBJECTIVE': ''}
-{('EDUCATION_NAME', 0): '', ('EDUCATION_DEGREE', 0): '', ('EDUCATION_DURATION', 0): '', ('EDUCATION_LIST', 0): '', ('EDUCATION_NAME', 2): '', ('EDUCATION_DEGREE', 2): '', ('EDUCATION_DURATION', 2): '', ('EDUCATION_LIST', 2): ''}
-{('PJ_NAME', 0): '', ('PJ_DURATION', 0): '', ('PJ_LIST', 0): '', ('PJ_NAME', 2): '', ('PJ_DURATION', 2): '', ('PJ_LIST', 2): ''}
-{('EXP_NAME', 0): '', ('EXP_DURATION', 0): '', ('EXP_SUBTITLE', 0): '', ('EXP_LIST', 0): '', ('EXP_NAME', 2): '', ('EXP_DURATION', 2): '', ('EXP_SUBTITLE', 2): '', ('EXP_LIST', 2): ''}
-{('SKILL_CATEGORY', 0): '', ('SKILL_LIST', 0): '', ('SKILL_CATEGORY', 2): '', ('SKILL_LIST', 2): ''}
+{('EDUCATION_NAME', 0): '', ('EDUCATION_DEGREE', 0): '', ('EDUCATION_DURATION', 0): '', ('EDUCATION_LIST', 0): '', ('EDUCATION_NAME', 1): '', ('EDUCATION_DEGREE', 1): '', ('EDUCATION_DURATION', 1): '', ('EDUCATION_LIST', 1): '', ('EDUCATION_NAME', 2): '', ('EDUCATION_DEGREE', 2): '', ('EDUCATION_DURATION', 2): '', ('EDUCATION_LIST', 2): '', ('EDUCATION_NAME', 3): '', ('EDUCATION_DEGREE', 3): '', ('EDUCATION_DURATION', 3): '', ('EDUCATION_LIST', 3): ''}
+{('PJ_NAME', 0): '', ('PJ_DURATION', 0): '', ('PJ_LIST', 0): ''}
+{('EXP_NAME', 0): '', ('EXP_DURATION', 0): '', ('EXP_SUBTITLE', 0): '', ('EXP_LIST', 0): ''}
+{('SKILL_CATEGORY', 0): '', ('SKILL_LIST', 0): ''}

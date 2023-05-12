@@ -1,0 +1,8 @@
+Formal Resume Generator 2023
+1, 3, 2, 3
+{'NAME': 'Testing', 'NICKNAME': '', 'TELEPHONE': 'Testing', 'EMAIL': '', 'GITHUBLINK': '', 'WEBLINK': 'Testing'}
+{'OBJECTIVE': 'Testing'}
+{('EDUCATION_NAME', 0): 'Testing', ('EDUCATION_DEGREE', 0): '', ('EDUCATION_DURATION', 0): '', ('EDUCATION_LIST', 0): 'Testing'}
+{('PJ_NAME', 0): 'TestingTesting', ('PJ_DURATION', 0): '', ('PJ_LIST', 0): 'TestingTestingTestingTestingTestingTesting', ('PJ_NAME', 1): '', ('PJ_DURATION', 1): '', ('PJ_LIST', 1): '', ('PJ_NAME', 2): 'Testingsada', ('PJ_DURATION', 2): '', ('PJ_LIST', 2): 'qeqweq'}
+{('EXP_NAME', 0): '', ('EXP_DURATION', 0): '', ('EXP_SUBTITLE', 0): '', ('EXP_LIST', 0): '', ('EXP_NAME', 1): '', ('EXP_DURATION', 1): '', ('EXP_SUBTITLE', 1): '', ('EXP_LIST', 1): 'TestingTestingTestingTestingsadasd'}
+{('SKILL_CATEGORY', 0): '', ('SKILL_LIST', 0): '', ('SKILL_CATEGORY', 1): 'asdasdasdTesting', ('SKILL_LIST', 1): '', ('SKILL_CATEGORY', 2): '', ('SKILL_LIST', 2): ''}

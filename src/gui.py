@@ -5,6 +5,7 @@ import os
 
 from src.create_object import *
 from src.expend_layout import *
+from src.SaveData import *
 from src.LoadData import LoadData
 from src.classes.RowCounter import RowCounter
 
@@ -41,7 +42,7 @@ def gui() -> dict:
                              sg.Text("resume-generator", tooltip="https://github.com/Argonaut790/resume-generator.git", enable_events=True, key="URL https://github.com/Argonaut790/resume-generator.git", text_color="skyblue")],
                             [sg.Text("**Disclaimer** All The Information Won't Be Stored", text_color="red", font = ("Arial", 9))] ]
 
-    intro_layout = [[sg.Column([[sg.Image(str(pathlib.Path().resolve()) + "\\assets\icon.png")]], size=(110,110)), sg.Column(instruction_layout)]]
+    intro_layout = [[sg.Column([[sg.Image(str(pathlib.Path().resolve()) + "\\assets\icon.png")]], size=(107,107)), sg.Column(instruction_layout)]]
 
     browse_old_data_layout = [[sg.Text('Browse Old Data', font='Arial 14 bold')],
                             [sg.Text("Please select the old data file", size=(21,1)), sg.InputText(key="OLD_DATA_PATH", size=(50,1), use_readonly_for_disable=True, disabled=True, background_color=sg.theme_background_color(), text_color="black"), sg.FileBrowse(key="BROWSE_DATA", size=(8,1)),
@@ -76,7 +77,7 @@ def gui() -> dict:
 
     # All the stuff inside your window.
     layout = [ [sg.Menu(menu_layout, background_color='white', tearoff=False, text_color='black', key="-MENU-") ],
-                intro_layout,
+                # intro_layout,
                 browse_old_data_layout,
                 [sg.Column(heading_layout, size=(FIXEDCOLUMNWIDTH, FIXEDCOLUMNHEIGHT)),
                 sg.Column(objective_layout, size=(FIXEDCOLUMNWIDTH, FIXEDCOLUMNHEIGHT))],
@@ -122,12 +123,10 @@ def gui() -> dict:
             return
         if not isinstance(event, tuple):
             if event.startswith("URL "):
-                print(event)
                 url = event.split(" ")[1]
                 webbrowser.open(url)
         if event == "OLD_DATA_PATH":
             OLD_DATA = values["OLD_DATA_PATH"]
-            print(OLD_DATA)
         if event == "LOAD_DATA":
             LoadData(window, row_counter, values["OLD_DATA_PATH"])
         if event == "CLEAN":
@@ -218,7 +217,6 @@ def gui() -> dict:
         heading = ["NAME", "NICKNAME", "TELEPHONE", "EMAIL", "GITHUBLINK", "WEBLINK"]
         if event == 'Generate':
             # TODO: Check if the file is opening or not first, if opening then error to close it first
-            print(values)
             for key, value in values.items():
                 if key in heading:
                     heading_content[key] = value
@@ -253,6 +251,13 @@ def gui() -> dict:
         skills_content.pop(("SKILL_CATEGORY", row), None)
         skills_content.pop(("SKILL_LIST", row), None)
 
+    # Reset the key to start from 1
+    education_content =  ResetKey(education_content, 4).copy()
+    sideproject_content = ResetKey(sideproject_content, 3).copy()
+    experience_content = ResetKey(experience_content, 4).copy()
+    skills_content = ResetKey(skills_content, 2).copy()
+
+    # Only Retrieve the values, not include the key
     massaged_heading_content = []
     massaged_objective_content = []
     massaged_education_content = []
@@ -280,8 +285,8 @@ def gui() -> dict:
         massaged_skills_content.append(value)
         massaged_values[key] = value
 
-    print("Massaged Values")
-    print(massaged_values)
+    # print("Massaged Values")
+    # print(massaged_values)
 
     #save resume data'
     file_name = values["NAME"] + "_resume"

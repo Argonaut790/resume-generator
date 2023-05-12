@@ -71,22 +71,13 @@ def LoadData(window, row_counter, data_path:str) -> None:
         window[key].update(value)
     for key, value in objective_content.items():
         window[key].update(value)
-    if not len(education_content)%4:
-        i = 0
-        count = 0
-        for key, value in education_content.items():
-            if count == 4:
-                i += 1
-                count = 0
-            if key[1] != i:
-                new_key = list(key)
-                new_key[1] = i
-                education_content[tuple(new_key)] = value
-                del education_content[key]
-            count += 1
-    else:
-        print("Error: Education data is not in correct format")
-    
-    print("education_content = ", education_content)
+    for key, value in education_content.items():
+        window[key].update(value)
+    for key, value in sideproject_content.items():
+        window[key].update(value)
+    for key, value in experience_content.items():
+        window[key].update(value)
+    for key, value in skills_content.items():
+        window[key].update(value)
 
     
