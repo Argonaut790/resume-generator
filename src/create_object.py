@@ -12,7 +12,7 @@ from src.classes.Skill import Skill
 
 def create_heading_object(li:list) -> Component:
     if len(li) != 6:
-        raise ValueError("Heading list must have 4 elements")
+        raise ValueError("Heading list must have 6 elements")
     if not li[0]:
         name = "[Your Name]"
     else:

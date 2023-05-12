@@ -60,7 +60,7 @@ def Education(document, education_content) -> None:
         TableStyle(table)
 
         ContentDescriptionStyle(document, component.description)
-    ContentHeadingStyle(education)
+        ContentHeadingStyle(education)
 
 def SideProjects(document, sideProjects_content) -> None:
   # Subheading
