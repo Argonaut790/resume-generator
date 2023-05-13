@@ -3,7 +3,7 @@ from docx.enum.table import WD_ALIGN_VERTICAL
 from docx.shared import Pt, Cm, RGBColor
 
 from src.horizontal_line import insertHR
-import src.data as data
+import src.resume_metadata as data
 
 def HeadingStyle(paragraph) -> None:
     paragraph_format = paragraph.paragraph_format

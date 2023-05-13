@@ -4,7 +4,7 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 import subprocess
 
 from src.Style import *
-import src.data as data
+import src.resume_metadata as data
 from src.gui import gui
 
 def Heading(document, heading_content) -> None:
@@ -53,8 +53,8 @@ def Education(document, education_content) -> None:
         table = document.add_table(rows=1, cols=2)
         heading_cells = table.rows[0].cells
         heading_cells[0].text = component.subTitle
-        if component.duration:
-            heading_cells[1].text = component.duration[0] + " - " + component.duration[1]
+        if component.start and component.end:
+            heading_cells[1].text = component.start + " - " + component.end
         else:
             heading_cells[1].text = ""
         TableStyle(table)
@@ -73,8 +73,8 @@ def SideProjects(document, sideProjects_content) -> None:
             table = document.add_table(rows=1, cols=2)
             heading_cells = table.rows[0].cells
             heading_cells[0].text = component.subTitle
-            if component.duration:
-                heading_cells[1].text = component.duration[0] + " - " + component.duration[1]
+            if component.start and component.end:
+                heading_cells[1].text = component.start + " - " + component.end
             else:
                 heading_cells[1].text = ""
             ContentHeadingStyle(sideProject)
@@ -82,8 +82,8 @@ def SideProjects(document, sideProjects_content) -> None:
             table = document.add_table(rows=1, cols=2)
             heading_cells = table.rows[0].cells
             heading_cells[0].text = component.title
-            if component.duration:
-                heading_cells[1].text = component.duration[0] + " - " + component.duration[1]
+            if component.start and component.end:
+                heading_cells[1].text = component.start + " - " + component.end
             else:
                 heading_cells[1].text = ""
             ContentHeadingStyle(heading_cells[0].paragraphs[0])
@@ -101,8 +101,8 @@ def Experience(document, experience_content) -> None:
         table = document.add_table(rows=1, cols=2)
         heading_cells = table.rows[0].cells
         heading_cells[0].text = component.subTitle
-        if component.duration:
-            heading_cells[1].text = component.duration[0] + " - " + component.duration[1]
+        if component.start and component.end:
+            heading_cells[1].text = component.start + " - " + component.end
         else:
             heading_cells[1].text = ""
         TableStyle(table)
@@ -126,9 +126,9 @@ def Skills(document, skills_content) -> None:
 
     SkillStyle(table)
 
-def main() -> None:
+def main(console_message:str = None) -> None:
     # Call gui
-    user_data = gui()
+    user_data = gui(console_message)
     if not user_data:
         print("Exited")
         return
@@ -178,12 +178,13 @@ def main() -> None:
     # Save File
     try:
         document.save(heading_data.name + "_resume.docx")
-        shell_process = subprocess.Popen([heading_data.name + "_resume.docx"],shell=True) 
+        shell_process = subprocess.Popen([heading_data.name + "_resume.docx"], shell=True) 
         shell_process.wait()
         print("File saved successfully")
     except:
-        print("Error: Unable to save file")
-        print("Please close the file and try again")
+        res = "Error: Unable to save file, please close the file and try again"
+        print(res)
+        main(res)
 
 
 if __name__ == "__main__":

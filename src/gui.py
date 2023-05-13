@@ -5,6 +5,7 @@ import os
 
 from src.create_object import *
 from src.expend_layout import *
+from src.gui_metadata import *
 from src.SaveData import *
 from src.LoadData import LoadData
 from src.classes.RowCounter import RowCounter
@@ -12,23 +13,7 @@ from src.classes.RowCounter import RowCounter
 # from create_object import *
 # from LoadData import LoadData
 
-# Window size
-WINDOWSWIDTH = 1400
-WINDOWSHEIGHT = 870
-# Column size
-FIXEDCOLUMNWIDTH = 673
-FIXEDCOLUMNHEIGHT = 120
-COLUMNWIDTH = 650
-COLUMNHEIGHT = 160
-# Button size
-ADDBUTTONWIDTH = 6
-BUTTONHEIGHT = 1
-# Version
-VERSION = "1.0"
-
-KEYS_TO_CLEAR = ["NAME", "NICKNAME", "TELEPHONE", "EMAIL", "GITHUBLINK", "WEBLINK", "OBJECTIVE", "EDUCATION_NAME", "EDUCATION_DEGREE", "EDUCATION_DURATION", "EDUCATION_LIST", "PJ_NAME", "PJ_DURATION", "PJ_LIST", "EXP_NAME", "EXP_DURATION", "EXP_SUBTITLE", "EXP_LIST", "SKILL_CATEGORY", "SKILL_LIST"]
-
-def gui() -> dict:
+def gui(console_message) -> dict:
     # Add a touch of color
     sg.theme('DarkAmber')   
     font = ("Arial", 11)
@@ -42,7 +27,8 @@ def gui() -> dict:
                              sg.Text("resume-generator", tooltip="https://github.com/Argonaut790/resume-generator.git", enable_events=True, key="URL https://github.com/Argonaut790/resume-generator.git", text_color="skyblue")],
                             [sg.Text("**Disclaimer** All The Information Won't Be Stored", text_color="red", font = ("Arial", 9))] ]
 
-    intro_layout = [[sg.Column([[sg.Image(str(pathlib.Path().resolve()) + "\\assets\icon.png")]], size=(107,107)), sg.Column(instruction_layout)]]
+    intro_layout = [[sg.Column([[sg.Image(str(pathlib.Path().resolve()) + "\\assets\icon.png")]], size=(107,107)),
+                      sg.Column(instruction_layout)]]
 
     browse_old_data_layout = [[sg.Text('Browse Old Data', font='Arial 14 bold')],
                             [sg.Text("Please select the old data file", size=(21,1)), sg.InputText(key="OLD_DATA_PATH", size=(50,1), use_readonly_for_disable=True, disabled=True, background_color=sg.theme_background_color(), text_color="black"), sg.FileBrowse(key="BROWSE_DATA", size=(8,1)),
@@ -55,7 +41,7 @@ def gui() -> dict:
                  ]
                       
     objective_layout = [[sg.Text('Objective', font='Arial 14 bold')],
-                [sg.Text('Objective', size=(8,1)), sg.Multiline(key="OBJECTIVE", size=(60,3))] ]
+                [sg.Text('Objective', size=(data.FIRSTTEXTWIDTH,1)), sg.Multiline(key="OBJECTIVE", size=(data.FULLWIDTH,2))] ]
 
     education_layout = [[sg.Text('Education', font='Arial 14 bold')],
                         [sg.Column([create_education(0, 1)], key="-EDUCATION_ROW_PANEL-", scrollable=True,  vertical_scroll_only=True, size=(COLUMNWIDTH, COLUMNHEIGHT))],
@@ -77,8 +63,8 @@ def gui() -> dict:
 
     # All the stuff inside your window.
     layout = [ [sg.Menu(menu_layout, background_color='white', tearoff=False, text_color='black', key="-MENU-") ],
-                # intro_layout,
-                browse_old_data_layout,
+                [sg.Column(intro_layout)],
+                [sg.Column(browse_old_data_layout)],
                 [sg.Column(heading_layout, size=(FIXEDCOLUMNWIDTH, FIXEDCOLUMNHEIGHT)),
                 sg.Column(objective_layout, size=(FIXEDCOLUMNWIDTH, FIXEDCOLUMNHEIGHT))],
                 [sg.Column(education_layout),
@@ -86,10 +72,15 @@ def gui() -> dict:
                 [sg.Column(experience_layout),
                 sg.Column(skills_layout)],
               [sg.Button('Generate', size=(8,1)), sg.Button('Cancel'), sg.Button("Clean", key="CLEAN"), sg.Button("Delete Data", key="DELETE_DATA" , tooltip="Delete All Input Data"), sg.Text("", key="RESPONSE")],
-              copyright_layout]
+              [sg.Column(copyright_layout)]]
 
+    layout = [[sg.Column(layout, size=(WINDOWSWIDTH, WINDOWSHEIGHT), scrollable=True)]]
     # Create the Window
-    window = sg.Window(f'Formal Resume Generator v{VERSION}', layout, size=(WINDOWSWIDTH, WINDOWSHEIGHT), font=font, icon=str(pathlib.Path().resolve()) + "\\assets\icon.ico", margins=(10,10))
+    window = sg.Window(f'Formal Resume Generator v{VERSION}', layout, size=(WINDOWSWIDTH, WINDOWSHEIGHT), font=font, icon=str(pathlib.Path().resolve()) + "\\assets\icon.ico", margins=(10,10), resizable=True, finalize=True)
+
+    # Updata console message
+    if console_message:
+        window["RESPONSE"].update(console_message)
 
     # Create Row Counter Object
     row_counter = RowCounter(0,1,0,1,0,1,0,1)
@@ -109,8 +100,8 @@ def gui() -> dict:
     removed_skills_row = []
 
     # Get env data
-    if os.path.exists("env data.txt"):
-        f = open("env data.txt", "r")
+    if os.path.exists("env_data.txt"):
+        f = open("env_data.txt", "r")
         last_modified_filename = f.readline()
         f.close()
     else:
@@ -119,29 +110,42 @@ def gui() -> dict:
     # Event Loop to process "events" and get the "values" of the inputs
     while True:
         event, values = window.read()
+        
+        # Close the window
         if event == sg.WIN_CLOSED or event == 'Cancel': # if user closes window or clicks cancel
             return
+        
+        # URL event
         if not isinstance(event, tuple):
             if event.startswith("URL "):
                 url = event.split(" ")[1]
                 webbrowser.open(url)
-        if event == "OLD_DATA_PATH":
-            OLD_DATA = values["OLD_DATA_PATH"]
+
+        # Load Data
         if event == "LOAD_DATA":
             LoadData(window, row_counter, values["OLD_DATA_PATH"])
+        
+        # Year input validation, only allow 4 digits and numeric
+        if isinstance(event, tuple):
+            if event[0].endswith("YEAR"):
+                value = window.Element(event).Get()
+                if len(value) > 4 or not value.isnumeric():
+                    window.Element(event).Update(value[:-1])
+        
+        # Clear all input
         if event == "CLEAN":
             # TODO: reset to 1 row in each of them, also key are now tuple
 
             for key in KEYS_TO_CLEAR:
                 window[key]('')
-            for i in range(1, row_counter.education_row_counter+1):
+            for i in range(1, row_counter.education_row_counter):
                 window[("-EDUCATION_ROW-", i)].update(visible=False)
                 print(f"{window[('-EDUCATION_ROW-', i)].visible}")
-            for i in range(1, row_counter.sideproject_row_counter+1):
+            for i in range(1, row_counter.sideproject_row_counter):
                 window[("-SIDEPROJECT_ROW-", i)].update(visible=False)
-            for i in range(1, row_counter.experience_row_counter+1):
+            for i in range(1, row_counter.experience_row_counter):
                 window[("-EXPERIENCE_ROW-", i)].update(visible=False)
-            for i in range(1, row_counter.skills_row_counter+1):
+            for i in range(1, row_counter.skills_row_counter):
                 window[("-SKILLS_ROW-", i)].update(visible=False)
             # Update Scrollbar
             window.refresh()
@@ -150,13 +154,16 @@ def gui() -> dict:
             window["-EXPERIENCE_ROW_PANEL-"].contents_changed()
             window["-SKILLS_ROW_PANEL-"].contents_changed()
         if event == "DELETE_DATA":
-            if os.path.exists(last_modified_filename + ".txt"):
-                os.remove(last_modified_filename + ".txt")
-                print(f"{last_modified_filename}.txt Data deleted")
-            if os.path.exists(last_modified_filename + ".docx"):
-                os.remove(last_modified_filename + ".docx")
-                print(f"{last_modified_filename}.docx Data deleted")
-            window["RESPONSE"].update("Data deleted")
+            try:
+                if os.path.exists(last_modified_filename + ".txt"):
+                    os.remove(last_modified_filename + ".txt")
+                    print(f"{last_modified_filename}.txt Data deleted")
+                if os.path.exists(last_modified_filename + ".docx"):
+                    os.remove(last_modified_filename + ".docx")
+                    print(f"{last_modified_filename}.docx Data deleted")
+                window["RESPONSE"].update("Data deleted")
+            except:
+                window["RESPONSE"].update("Error: Data not deleted, close the file before delete")
         # Add and Remove Row
         if event == "-EDUCATION_ROW_ADD-":
             row_counter.education_row_counter += 1
@@ -217,6 +224,18 @@ def gui() -> dict:
         heading = ["NAME", "NICKNAME", "TELEPHONE", "EMAIL", "GITHUBLINK", "WEBLINK"]
         if event == 'Generate':
             # TODO: Check if the file is opening or not first, if opening then error to close it first
+            
+            try:
+                if os.path.exists(last_modified_filename + ".txt"):
+                    os.remove(last_modified_filename + ".txt")
+                    print(f"{last_modified_filename}.txt Data deleted")
+                if os.path.exists(last_modified_filename + ".docx"):
+                    os.remove(last_modified_filename + ".docx")
+                    print(f"{last_modified_filename}.docx Data deleted")
+                window["RESPONSE"].update("Data deleted")
+            except:
+                pass
+
             for key, value in values.items():
                 if key in heading:
                     heading_content[key] = value
@@ -236,26 +255,30 @@ def gui() -> dict:
     for row in removed_education_row:
         education_content.pop(("EDUCATION_NAME", row), None)
         education_content.pop(("EDUCATION_DEGREE", row), None)
-        education_content.pop(("EDUCATION_DURATION", row), None)
+        education_content.pop(("EDUCATION_START", row), None)
+        education_content.pop(("EDUCATION_END", row), None)
         education_content.pop(("EDUCATION_LIST", row), None)
     for row in removed_sideproject_row:
         sideproject_content.pop(("PJ_NAME", row), None)
-        sideproject_content.pop(("PJ_DURATION", row), None)
+        sideproject_content.pop(("PJ_START", row), None)
+        sideproject_content.pop(("PJ_END", row), None)
         sideproject_content.pop(("PJ_LIST", row), None)
     for row in removed_experience_row:
         experience_content.pop(("EXP_NAME", row), None)
-        experience_content.pop(("EXP_DURATION", row), None)
+        experience_content.pop(("EXP_START", row), None)
+        experience_content.pop(("EXP_END", row), None)
         experience_content.pop(("EXP_SUBTITLE", row), None)
         experience_content.pop(("EXP_LIST", row), None)
     for row in removed_skills_row:
         skills_content.pop(("SKILL_CATEGORY", row), None)
         skills_content.pop(("SKILL_LIST", row), None)
 
+    print(f"values = {values}")
     # Reset the key to start from 1
-    education_content =  ResetKey(education_content, 4).copy()
-    sideproject_content = ResetKey(sideproject_content, 3).copy()
-    experience_content = ResetKey(experience_content, 4).copy()
-    skills_content = ResetKey(skills_content, 2).copy()
+    education_content =  ResetKey(education_content, EDUCATIONFIELD).copy()
+    sideproject_content = ResetKey(sideproject_content, SIDEPROJECTFIELD).copy()
+    experience_content = ResetKey(experience_content, EXPERIENCEFIELD).copy()
+    skills_content = ResetKey(skills_content, SKILLSFIELD).copy()
 
     # Only Retrieve the values, not include the key
     massaged_heading_content = []
@@ -285,10 +308,7 @@ def gui() -> dict:
         massaged_skills_content.append(value)
         massaged_values[key] = value
 
-    # print("Massaged Values")
-    # print(massaged_values)
-
-    #save resume data'
+    #save resume data
     file_name = values["NAME"] + "_resume"
     f = open(file_name + ".txt", "w")
     f.write("Formal Resume Generator 2023\n")
@@ -302,7 +322,7 @@ def gui() -> dict:
     f.close()
 
     #save last modified meta data, use to delete old data
-    f = open("env data.txt", "w")
+    f = open("env_data.txt", "w")
     f.write(file_name)
     f.close()
 

@@ -1,8 +1,8 @@
 Formal Resume Generator 2023
-4, 1, 1, 1
+1, 1, 1, 1
 {'NAME': '', 'NICKNAME': '', 'TELEPHONE': '', 'EMAIL': '', 'GITHUBLINK': '', 'WEBLINK': ''}
 {'OBJECTIVE': ''}
-{('EDUCATION_NAME', 0): '', ('EDUCATION_DEGREE', 0): '', ('EDUCATION_DURATION', 0): '', ('EDUCATION_LIST', 0): '', ('EDUCATION_NAME', 1): '', ('EDUCATION_DEGREE', 1): '', ('EDUCATION_DURATION', 1): '', ('EDUCATION_LIST', 1): '', ('EDUCATION_NAME', 2): '', ('EDUCATION_DEGREE', 2): '', ('EDUCATION_DURATION', 2): '', ('EDUCATION_LIST', 2): '', ('EDUCATION_NAME', 3): '', ('EDUCATION_DEGREE', 3): '', ('EDUCATION_DURATION', 3): '', ('EDUCATION_LIST', 3): ''}
-{('PJ_NAME', 0): '', ('PJ_DURATION', 0): '', ('PJ_LIST', 0): ''}
-{('EXP_NAME', 0): '', ('EXP_DURATION', 0): '', ('EXP_SUBTITLE', 0): '', ('EXP_LIST', 0): ''}
+{('EDUCATION_NAME', 0): '', ('EDUCATION_DEGREE', 0): '', ('EDUCATION_START_MON', 0): 'Jan', ('EDUCATION_START_YEAR', 0): '', ('EDUCATION_END_MON', 0): 'Jan', ('EDUCATION_END_YEAR', 0): '', ('EDUCATION_LIST', 0): ''}
+{('PJ_NAME', 0): '', ('PJ_START_MON', 0): 'Jan', ('PJ_START_YEAR', 0): '', ('PJ_END_MON', 0): 'Jan', ('PJ_END_YEAR', 0): '', ('PJ_LIST', 0): ''}
+{('EXP_NAME', 0): '', ('EXP_SUBTITLE', 0): '', ('EXP_START_MON', 0): 'Jan', ('EXP_START_YEAR', 0): '', ('EXP_END_MON', 0): 'Jan', ('EXP_END_YEAR', 0): '', ('EXP_LIST', 0): ''}
 {('SKILL_CATEGORY', 0): '', ('SKILL_LIST', 0): ''}

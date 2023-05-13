@@ -1,7 +1,8 @@
 class Component:
-    def __init__(self, title:str, duration:list, description:list=None, subTitle:str=None):
+    def __init__(self, title:str, start:str, end:str, description:list=None, subTitle:str=None):
         self._title = title
-        self._duration = duration
+        self._start = start
+        self._end = end
         self._subTitle = subTitle
         self._description = description
     
@@ -10,9 +11,13 @@ class Component:
         return self._title
     
     @property
-    def duration(self) -> str:
-        return self._duration
+    def start(self) -> str:
+        return self._start
     
+    @property
+    def end(self) -> str:
+        return self._end
+
     @property
     def subTitle(self) -> str:
         return self._subTitle
@@ -25,9 +30,13 @@ class Component:
     def title(self, title:str) -> None:
         self._title = title
 
-    @duration.setter
-    def duration(self, duration:str) -> None:
-        self._duration = duration
+    @start.setter
+    def start(self, start:str) -> None:
+        self._start = start
+
+    @end.setter
+    def end(self, end:str) -> None:
+        self._end = end
 
     @subTitle.setter
     def subTitle(self, subTitle:str) -> None:
