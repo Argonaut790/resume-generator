@@ -1,16 +1,24 @@
 import PySimpleGUI as sg
 import src.gui_metadata as data
+
 def duration(type:str, row_counter) -> list:
-    return [sg.Text('Start Date', size=(data.STARTWIDTH,1)),
+    return [[sg.Text('Start Date', size=(data.STARTWIDTH,1)),
              sg.Text('Month', size=(data.MONTHWIDTH,1)),
-               sg.DD(data.MONTHS, size=(data.DDWIDTH,1), default_value=data.MONTHS[0], key=(f"{type}_START_MON", row_counter)),
+               sg.DD(data.MONTHS, size=(data.DDWIDTH,1), default_value=data.MONTHS[0], key=(f"{type}_START_MON", row_counter), enable_events=True),
                  sg.Text('Year', size=(data.YEARWIDTH,1)),
                    sg.InputText(key=(f"{type}_START_YEAR", row_counter), size=(data.YEARINPUTWIDTH,1), enable_events=True),
             sg.Text('End Date', size=(data.ENDWIDTH,1)),
              sg.Text('Month', size=(data.MONTHWIDTH,1)),
-               sg.DD(data.MONTHS, size=(data.DDWIDTH,1), default_value=data.MONTHS[0], key=(f"{type}_END_MON", row_counter)),
+               sg.DD(data.MONTHS, size=(data.DDWIDTH,1), default_value=data.MONTHS[0], key=(f"{type}_END_MON", row_counter), enable_events=True),
                  sg.Text('Year', size=(data.YEARWIDTH,1)),
-                   sg.InputText(key=(f"{type}_END_YEAR", row_counter), size=(data.YEARINPUTWIDTH,1), enable_events=True)]
+                   sg.InputText(key=(f"{type}_END_YEAR", row_counter), size=(data.YEARINPUTWIDTH,1), enable_events=True)],
+            # Preview of start and end date
+            [sg.Text("", size=(data.STARTWIDTH)),
+             sg.Text('START', size=(data.MONTHWIDTH + data.DDWIDTH + 2,1)),
+             sg.InputText(key=(f"{type}_START", row_counter), size=(data.YEARWIDTH + data.YEARINPUTWIDTH + 3,1), default_text="Jan 2023", use_readonly_for_disable=True, disabled=True, disabled_readonly_background_color=sg.theme_background_color(), disabled_readonly_text_color=sg.theme_text_color()),
+             sg.Text('END', size=(data.ENDWIDTH,1)),
+             sg.InputText(key=(f"{type}_END", row_counter), size=(data.YEARWIDTH + data.YEARINPUTWIDTH + 3,1), default_text="Jan 2023", use_readonly_for_disable=True, disabled=True, disabled_readonly_background_color=sg.theme_background_color(), disabled_readonly_text_color=sg.theme_text_color()),
+             sg.Button("Present", size=(data.YEARWIDTH + data.YEARINPUTWIDTH + 1,1), key=(f"{type}_PRESENT", row_counter), enable_events=True, tooltip="Till Present"),]]
 
 def description(type:str, row_counter) -> list:
     return [sg.Text('Description', size=(data.FIRSTTEXTWIDTH,1)),
@@ -21,9 +29,10 @@ def create_education(row_counter, row_number_view) -> list:
     row = [sg.pin(
         sg.Column([[sg.Text(f"#{row_number_view}, counter {row_counter}", font='Arial 11 bold'), sg.Button('Remove', size=(data.REMOVEBUTTONWIDTH,data.BUTTONHEIGHT), enable_events=True, key=("-EDUCATION_ROW_REMOVE-", row_counter), tooltip="Delete Education Field")],
                 [sg.Text('School Name', size=(data.FIRSTTEXTWIDTH,1)), sg.InputText(key=("EDUCATION_NAME", row_counter), size=(data.INPUTWIDTH,1)), sg.Text('Degree', size=(data.SECONDTEXTWIDTH,1)), sg.InputText(key=("EDUCATION_DEGREE", row_counter), size=(data.INPUTWIDTH,1))],
-                duration("EDUCATION", row_counter),
+                [sg.Column(duration("EDUCATION", row_counter), pad=(0,0))],
                 description("EDUCATION", row_counter)],
-                key=("-EDUCATION_ROW-", row_counter)
+                key=("-EDUCATION_ROW-", row_counter),
+                pad=(0,0)
         ))]
     return row
 
@@ -31,9 +40,10 @@ def create_sideproject(row_counter, row_number_view) -> list:
     row = [sg.pin(
         sg.Column([[sg.Text(f"# {row_number_view}", font='Arial 11 bold'), sg.Button('Remove', size=(data.REMOVEBUTTONWIDTH,data.BUTTONHEIGHT), enable_events=True, key=("-SIDEPROJECT_ROW_REMOVE-", row_counter), tooltip="Delete Side Project Field")],
              [sg.Text('Title', size=(data.FIRSTTEXTWIDTH,1)), sg.InputText(key=("PJ_NAME", row_counter), size=(data.FULLWIDTH+2,1))],
-             duration("PJ", row_counter),
+            [sg.Column(duration("PJ", row_counter), pad=(0,0))],
             description("PJ", row_counter)],
-             key=("-SIDEPROJECT_ROW-", row_counter)
+            key=("-SIDEPROJECT_ROW-", row_counter),
+            pad=(0,0)
         ))]
     return row
 
@@ -41,9 +51,10 @@ def create_experience(row_counter, row_number_view) -> list:
     row = [sg.pin(
         sg.Column([[sg.Text(f"# {row_number_view}", font='Arial 11 bold'), sg.Button('Remove', size=(data.REMOVEBUTTONWIDTH,data.BUTTONHEIGHT), enable_events=True, key=("-EXPERIENCE_ROW_REMOVE-", row_counter), tooltip="Delete Experience Field")],
                 [sg.Text('Name', size=(data.FIRSTTEXTWIDTH,1)), sg.InputText(key=("EXP_NAME", row_counter), size=(data.INPUTWIDTH,1)), sg.Text('Subtitle', size=(data.SECONDTEXTWIDTH,1)), sg.InputText(key=("EXP_SUBTITLE", row_counter), size=(data.INPUTWIDTH,1))],
-                duration("EXP", row_counter),
+                [sg.Column(duration("EXP", row_counter), pad=(0,0))],
                 description("EXP", row_counter)],
-                key=("-EXPERIENCE_ROW-", row_counter)
+                key=("-EXPERIENCE_ROW-", row_counter),
+                pad=(0,0)
             ))]
     return row
 
@@ -52,6 +63,7 @@ def create_skills(row_counter, row_number_view) -> list:
         sg.Column([[sg.Text(f"# {row_number_view}", font='Arial 11 bold'), sg.Button('Remove', size=(data.REMOVEBUTTONWIDTH,data.BUTTONHEIGHT), enable_events=True, key=("-SKILLS_ROW_REMOVE-", row_counter), tooltip="Delete Skills Field")],
                 [sg.Text('Category', size=(data.FIRSTTEXTWIDTH,1)), sg.InputText(key=("SKILL_CATEGORY", row_counter), size=(data.INPUTWIDTH,1))],
                 [sg.Text('List', size=(data.FIRSTTEXTWIDTH,1)), sg.InputText(key=("SKILL_LIST", row_counter), size=(data.FULLWIDTH+2,1))]],
-                key=("-SKILLS_ROW-", row_counter)
+                key=("-SKILLS_ROW-", row_counter),
+                pad=(0,0)
             ))]
     return row

@@ -31,7 +31,7 @@ def gui(console_message) -> dict:
                       sg.Column(instruction_layout)]]
 
     browse_old_data_layout = [[sg.Text('Browse Old Data', font='Arial 14 bold')],
-                            [sg.Text("Please select the old data file", size=(21,1)), sg.InputText(key="OLD_DATA_PATH", size=(50,1), use_readonly_for_disable=True, disabled=True, background_color=sg.theme_background_color(), text_color="black"), sg.FileBrowse(key="BROWSE_DATA", size=(8,1)),
+                            [sg.Text("Please select the old data file", size=(21,1)), sg.InputText(key="OLD_DATA_PATH", size=(50,1), use_readonly_for_disable=True, disabled=True, disabled_readonly_background_color=sg.theme_background_color(), disabled_readonly_text_color=sg.theme_text_color()), sg.FileBrowse(key="BROWSE_DATA", size=(8,1)),
                             sg.Button('Load', size=(8,1), key="LOAD_DATA", tooltip="Load Old Data")]]
     
     heading_layout = [  [sg.Text('Heading', font='Arial 14 bold')],
@@ -74,16 +74,26 @@ def gui(console_message) -> dict:
               [sg.Button('Generate', size=(8,1)), sg.Button('Cancel'), sg.Button("Clean", key="CLEAN"), sg.Button("Delete Data", key="DELETE_DATA" , tooltip="Delete All Input Data"), sg.Text("", key="RESPONSE")],
               [sg.Column(copyright_layout)]]
 
-    layout = [[sg.Column(layout, size=(WINDOWSWIDTH, WINDOWSHEIGHT), scrollable=True)]]
+    layout = [[sg.Column(layout, size=(WINDOWSWIDTH, WINDOWSHEIGHT), scrollable=True, pad=(0,0))]]
     # Create the Window
     window = sg.Window(f'Formal Resume Generator v{VERSION}', layout, size=(WINDOWSWIDTH, WINDOWSHEIGHT), font=font, icon=str(pathlib.Path().resolve()) + "\\assets\icon.ico", margins=(10,10), resizable=True, finalize=True)
 
-    # Updata console message
-    if console_message:
-        window["RESPONSE"].update(console_message)
+    # Get env data
+    if os.path.exists("env_data.txt"):
+        f = open("env_data.txt", "r")
+        last_modified_filename = f.readline()
+        f.close()
+    else:
+        last_modified_filename = ""
 
     # Create Row Counter Object
     row_counter = RowCounter(0,1,0,1,0,1,0,1)
+
+    # Updata console message
+    if console_message:
+        print(f"current working directory: {os.getcwd()}")
+        LoadData(window, row_counter, os.getcwd() + "\\" + last_modified_filename + ".txt")
+        window["RESPONSE"].update(console_message)
 
     # Object list
     heading_content = {}
@@ -98,14 +108,6 @@ def gui(console_message) -> dict:
     removed_sideproject_row = []
     removed_experience_row = []
     removed_skills_row = []
-
-    # Get env data
-    if os.path.exists("env_data.txt"):
-        f = open("env_data.txt", "r")
-        last_modified_filename = f.readline()
-        f.close()
-    else:
-        last_modified_filename = ""
 
     # Event Loop to process "events" and get the "values" of the inputs
     while True:
@@ -125,12 +127,35 @@ def gui(console_message) -> dict:
         if event == "LOAD_DATA":
             LoadData(window, row_counter, values["OLD_DATA_PATH"])
         
-        # Year input validation, only allow 4 digits and numeric
+        # Preview Date
         if isinstance(event, tuple):
-            if event[0].endswith("YEAR"):
+            if event[0].endswith("MON"):
+                preview_value = window.Element((event[0].replace("_MON", ""), event[1])).Get()
+                if len(preview_value.split(" ")) == 1 and preview_value.isnumeric():
+                    year = preview_value.split(" ")[0]
+                    window.Element((event[0].replace("_MON", ""), event[1])).Update(values[event] + " " + year)
+                elif len(preview_value.split(" ")) == 2:
+                    year = preview_value.split(" ")[1]
+                    window.Element((event[0].replace("_MON", ""), event[1])).Update(values[event] + " " + year)
+                else:
+                    window.Element((event[0].replace("_MON", ""), event[1])).Update(values[event])
+            elif event[0].endswith("YEAR"):
+                preview_value = window.Element((event[0].replace("_YEAR", ""), event[1])).Get()
                 value = window.Element(event).Get()
                 if len(value) > 4 or not value.isnumeric():
                     window.Element(event).Update(value[:-1])
+                elif len(preview_value.split(" ")) == 1 and preview_value.isalpha() and not preview_value == "Present":
+                    month = preview_value.split(" ")[0]
+                    window.Element((event[0].replace("_YEAR", ""), event[1])).Update(month + " " + value)
+                elif len(preview_value.split(" ")) == 2:
+                    month = preview_value.split(" ")[0]
+                    window.Element((event[0].replace("_YEAR", ""), event[1])).Update(month + " " + value)
+                # Year input validation, only allow 4 digits and numeric
+                else:
+                    window.Element((event[0].replace("_YEAR", ""), event[1])).Update(value)
+            elif event[0].endswith("PRESENT"):
+                window.Element((event[0].replace("_PRESENT", "_END"), event[1])).Update("Present")
+                
         
         # Clear all input
         if event == "CLEAN":

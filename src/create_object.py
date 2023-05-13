@@ -62,28 +62,18 @@ def create_education_object(li:list) -> list:
             education_subTitle = "[Your Degree]"
         else:
             education_subTitle = li[i+1]
-        if not li[i+2]:
-            education_start_month = "[Start Month]"
-        else:
-            education_start_month = li[i+2]
-        if not li[i+3]:
-            education_start_year = "[Start Year]"
-        else:
-            education_start_year = li[i+3]
-        education_start = f"{education_start_month} {education_start_year}"
-        if not li[i+4]:
-            education_end_month = "[End Month]"
-        else:
-            education_end_month = li[i+4]
-        if not li[i+5]:
-            education_end_year = "[End Year]"
-        else:
-            education_end_year = li[i+5]
-        education_end = f"{education_end_month} {education_end_year}"
         if not li[i+6]:
+            education_start = "[Start Month] [Start Year]"
+        else:
+            education_start = li[i+6]
+        if not li[i+7]:
+            education_end = "[End Month] [End Year]"
+        else:
+            education_end = li[i+7]
+        if not li[i+8]:
             education_description = ["[Description]"]
         else:
-            education_description = li[i+6]
+            education_description = li[i+8]
         education_list.append(Component(education_name, education_start, education_end, education_description, education_subTitle))
     return education_list
 
@@ -96,28 +86,18 @@ def create_side_projects_object(li:list) -> list:
             side_projects_name = "[Your Projects]"
         else:
             side_projects_name = li[0]
-        if not li[i+1]:
-            side_projects_start_month = "[Start Month]"
-        else:
-            side_projects_start_month = li[i+1]
-        if not li[i+2]:
-            side_projects_start_year = "[Start Year]"
-        else:
-            side_projects_start_year = li[i+2]
-        side_projects_start = f"{side_projects_start_month} {side_projects_start_year}"
-        if not li[i+3]:
-            side_projects_end_month = "[End Month]"
-        else:
-            side_projects_end_month = li[i+3]
-        if not li[i+4]:
-            side_projects_end_year = "[End Year]"
-        else:
-            side_projects_end_year = li[i+4]
-        side_projects_end = f"{side_projects_end_month} {side_projects_end_year}"
         if not li[i+5]:
+            side_project_start = "[Start Month] [Start Year]"
+        else:
+            side_projects_start = li[i+5]
+        if not li[i+6]:
+            side_projects_end = "[End Month] [End Year]"
+        else:
+            side_projects_end = li[i+6]
+        if not li[i+7]:
             side_projects_description = ["[Description]"]
         else:
-            side_projects_description = li[5]
+            side_projects_description = li[7]
         side_projects_list.append(Component(side_projects_name, side_projects_start, side_projects_end, side_projects_description))
     return side_projects_list
 
@@ -134,28 +114,18 @@ def create_experience_object(li:list) -> list:
             experience_subTitle = "[Your Position]"
         else:
             experience_subTitle = li[i+1]
-        if not li[i+2]:
-            experience_start_month = "[Start Month]"
+        if not li[i+6]:
+            experience_start = "[Start Month] [Start Year]"
         else:
-            experience_start_month = li[i+2]
-        if not li[i+3]:
-            experience_start_year = "[Start Year]"
+            experience_start = li[i+6]
+        if not li[i+7]:
+            experience_end = "[End Month] [End Year]"
         else:
-            experience_start_year = li[i+3]
-        experience_start = f"{experience_start_month} {experience_start_year}"
-        if not li[i+4]:
-            experience_end_month = "[End Month]"
-        else:
-            experience_end_month = li[i+4]
-        if not li[i+5]:
-            experience_end_year = "[End Year]"
-        else:
-            experience_end_year = li[i+5]
-        experience_end = f"{experience_end_month} {experience_end_year}"
-        if not li[i+4]:
+            experience_end = li[i+7]
+        if not li[i+8]:
             experience_description = ["[Description]"]
         else:
-            experience_description = li[i+4]
+            experience_description = li[i+8]
         experience_list.append(Component(experience_name, experience_start, experience_end, experience_description, experience_subTitle))
     return experience_list
 

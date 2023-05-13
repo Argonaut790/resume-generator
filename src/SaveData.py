@@ -1,6 +1,6 @@
 # rest key index in dictionary
 def ResetKey(content:dict, InputNumber:int) -> dict:
-
+    # Check if the content is in correct format
     if not len(content) % InputNumber:
         i = 0
         count = 0

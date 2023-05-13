@@ -186,7 +186,6 @@ def main(console_message:str = None) -> None:
         print(res)
         main(res)
 
-
 if __name__ == "__main__":
     __author__ = "TSE Hui Tung"
     __copyright__ = "Copyright 2023, Formal Resume Generator"
