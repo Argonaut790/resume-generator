@@ -87,7 +87,7 @@ def create_side_projects_object(li:list) -> list:
         else:
             side_projects_name = li[0]
         if not li[i+5]:
-            side_project_start = "[Start Month] [Start Year]"
+            side_projects_start = "[Start Month] [Start Year]"
         else:
             side_projects_start = li[i+5]
         if not li[i+6]:

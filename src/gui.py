@@ -13,9 +13,15 @@ from src.classes.RowCounter import RowCounter
 # from create_object import *
 # from LoadData import LoadData
 
+def move_center(window):
+    screen_width, screen_height = window.get_screen_dimensions()
+    win_width, win_height = window.size
+    x, y = (screen_width - win_width)//2, (screen_height - win_height)//2
+    window.move(x, y)
+
 def gui(console_message) -> dict:
     # Add a touch of color
-    sg.theme('DarkAmber')   
+    sg.theme(data.THEME)   
     font = ("Arial", 11)
     
     menu_layout = [['File', ['Open', 'Save', 'Exit', 'Properties']],
@@ -41,7 +47,7 @@ def gui(console_message) -> dict:
                  ]
                       
     objective_layout = [[sg.Text('Objective', font='Arial 14 bold')],
-                [sg.Text('Objective', size=(data.FIRSTTEXTWIDTH,1)), sg.Multiline(key="OBJECTIVE", size=(data.FULLWIDTH,2))] ]
+                [sg.Text('Objective', size=(data.FIRSTTEXTWIDTH,1)), sg.Multiline(key="OBJECTIVE", size=(data.FULLWIDTH,5))] ]
 
     education_layout = [[sg.Text('Education', font='Arial 14 bold')],
                         [sg.Column([create_education(0, 1)], key="-EDUCATION_ROW_PANEL-", scrollable=True,  vertical_scroll_only=True, size=(COLUMNWIDTH, COLUMNHEIGHT))],
@@ -62,7 +68,8 @@ def gui(console_message) -> dict:
     copyright_layout = [[sg.Text("Copyright 2023, Formal Resume Generator, Tse Hui Tung", text_color="gray", font=("mono", 8)),]]
 
     # All the stuff inside your window.
-    layout = [ [sg.Menu(menu_layout, background_color='white', tearoff=False, text_color='black', key="-MENU-") ],
+    layout = [ 
+                # [sg.Menu(menu_layout, background_color='white', tearoff=False, text_color='black', key="-MENU-") ],
                 [sg.Column(intro_layout)],
                 [sg.Column(browse_old_data_layout)],
                 [sg.Column(heading_layout, size=(FIXEDCOLUMNWIDTH, FIXEDCOLUMNHEIGHT)),
@@ -71,13 +78,17 @@ def gui(console_message) -> dict:
                 sg.Column(sideproject_layout)],
                 [sg.Column(experience_layout),
                 sg.Column(skills_layout)],
-              [sg.Button('Generate', size=(8,1)), sg.Button('Cancel'), sg.Button("Clean", key="CLEAN"), sg.Button("Delete Data", key="DELETE_DATA" , tooltip="Delete All Input Data"), sg.Text("", key="RESPONSE")],
+              [sg.Button('Generate', size=(8,1)), 
+               sg.Button('Cancel'), sg.Button("Clean", key="CLEAN"), 
+               sg.Button("Delete Data", key="DELETE_DATA" , tooltip="Delete All Input Data"), 
+               sg.Text("", key="RESPONSE")],
               [sg.Column(copyright_layout)]]
 
     layout = [[sg.Column(layout, size=(WINDOWSWIDTH, WINDOWSHEIGHT), scrollable=True, pad=(0,0))]]
     # Create the Window
     window = sg.Window(f'Formal Resume Generator v{VERSION}', layout, size=(WINDOWSWIDTH, WINDOWSHEIGHT), font=font, icon=str(pathlib.Path().resolve()) + "\\assets\icon.ico", margins=(10,10), resizable=True, finalize=True)
-
+    move_center(window)
+    
     # Get env data
     if os.path.exists("env_data.txt"):
         f = open("env_data.txt", "r")
@@ -163,21 +174,27 @@ def gui(console_message) -> dict:
 
             for key in KEYS_TO_CLEAR:
                 window[key]('')
-            for i in range(1, row_counter.education_row_counter):
+            for i in range(1, row_counter.education_row_counter + 1):
                 window[("-EDUCATION_ROW-", i)].update(visible=False)
-                print(f"{window[('-EDUCATION_ROW-', i)].visible}")
-            for i in range(1, row_counter.sideproject_row_counter):
+            for i in range(1, row_counter.sideproject_row_counter + 1):
                 window[("-SIDEPROJECT_ROW-", i)].update(visible=False)
-            for i in range(1, row_counter.experience_row_counter):
+            for i in range(1, row_counter.experience_row_counter + 1):
                 window[("-EXPERIENCE_ROW-", i)].update(visible=False)
-            for i in range(1, row_counter.skills_row_counter):
+            for i in range(1, row_counter.skills_row_counter + 1):
                 window[("-SKILLS_ROW-", i)].update(visible=False)
+
+            row_counter.education_row_number_view = 1
+            row_counter.sideproject_row_number_view = 1
+            row_counter.experience_row_number_view = 1
+            row_counter.skills_row_number_view = 1
+
             # Update Scrollbar
             window.refresh()
             window["-EDUCATION_ROW_PANEL-"].contents_changed()
             window["-SIDEPROJECT_ROW_PANEL-"].contents_changed()
             window["-EXPERIENCE_ROW_PANEL-"].contents_changed()
             window["-SKILLS_ROW_PANEL-"].contents_changed()
+
         if event == "DELETE_DATA":
             try:
                 if os.path.exists(last_modified_filename + ".txt"):
