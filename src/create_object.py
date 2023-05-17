@@ -78,10 +78,10 @@ def create_education_object(li:list) -> list:
     return education_list
 
 def create_side_projects_object(li:list) -> list:
-    if len(li) % SIDEPROJECTFIELD:
-        raise ValueError(f"Side Projects list must have {SIDEPROJECTFIELD} elements")
+    if len(li) % (SIDEPROJECTFIELD - 1):
+        raise ValueError(f"Side Projects list must have {(SIDEPROJECTFIELD - 1)} elements")
     side_projects_list = []
-    for i in range(0, len(li), SIDEPROJECTFIELD):
+    for i in range(0, len(li), (SIDEPROJECTFIELD - 1)):
         if not li[i]:
             side_projects_name = "[Your Projects]"
         else:

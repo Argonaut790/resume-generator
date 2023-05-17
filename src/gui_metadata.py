@@ -2,7 +2,7 @@
 THEME = "Darkgray 5"
 # Window size
 WINDOWSWIDTH = 1408
-WINDOWSHEIGHT = 910
+WINDOWSHEIGHT = 700
 # Column size
 FIXEDCOLUMNWIDTH = 655
 FIXEDCOLUMNHEIGHT = 120
@@ -39,10 +39,10 @@ OBJECTIVEFIELD = 1
 EDUCATIONFIELD = 9
 SIDEPROJECTFIELD = 8
 EXPERIENCEFIELD = 9
-SKILLSFIELD = 2
+SKILLSFIELD = 3
 # Keys to clear
 KEYS_TO_CLEAR = ["NAME", "NICKNAME", "TELEPHONE", "EMAIL", "GITHUBLINK", "WEBLINK", "OBJECTIVE", 
-                 ("EDUCATION_NAME", 0), ("EDUCATION_DEGREE", 0), ("EDUCATION_START", 0), ("EDUCATION_END", 0), ("EDUCATION_LIST", 0), 
-                 ("PJ_NAME", 0), ("PJ_START", 0), ("PJ_END", 0), ("PJ_LIST", 0), 
-                 ("EXP_NAME", 0), ("EXP_START", 0), ("EXP_END", 0), ("EXP_SUBTITLE", 0), ("EXP_LIST", 0), 
+                 ("EDUCATION_NAME", 0), ("EDUCATION_DEGREE", 0), ("EDUCATION_START", 0), ("EDUCATION_END", 0), ("EDUCATION_LIST", 0, 0), 
+                 ("PJ_NAME", 0), ("PJ_START", 0), ("PJ_END", 0), ("PJ_LIST", 0, 0), 
+                 ("EXP_NAME", 0), ("EXP_START", 0), ("EXP_END", 0), ("EXP_SUBTITLE", 0), ("EXP_LIST", 0, 0), 
                  ("SKILL_CATEGORY", 0), ("SKILL_LIST", 0)]

@@ -1,74 +1,43 @@
+from src.classes.ListCounter import ListCounter
+
 class RowCounter:
-    def __init__(self, education_row_counter, education_row_number_view, sideproject_row_counter, sideproject_row_number_view, experience_row_counter, experience_row_number_view, skills_row_counter, skills_row_number_view):
-        self._education_row_counter = education_row_counter
-        self._education_row_number_view = education_row_number_view
-        self._sideproject_row_counter = sideproject_row_counter
-        self._sideproject_row_number_view = sideproject_row_number_view
-        self._experience_row_counter = experience_row_counter
-        self._experience_row_number_view = experience_row_number_view
-        self._skills_row_counter = skills_row_counter
-        self._skills_row_number_view = skills_row_number_view
+    def __init__(self, field_type:str, row_counter:int, row_number_view:int): 
+        self._field_type = field_type
+        self._row_counter = row_counter
+        self._row_number_view = row_number_view
+        self._description_dict = {0: ListCounter(0, 0)}
 
     @property
-    def education_row_counter(self):
-        return self._education_row_counter
+    def field_type(self):
+        return self._field_type
     
-    @education_row_counter.setter
-    def education_row_counter(self, value):
-        self._education_row_counter = value
+    @field_type.setter
+    def field_type(self, value):
+        self._field_type = value
+    
+    @property
+    def row_counter(self):
+        return self._row_counter
+    
+    @row_counter.setter
+    def row_counter(self, value):
+        self._row_counter = value
+    
+    @property
+    def row_number_view(self):
+        return self._row_number_view
+    
+    @row_number_view.setter
+    def row_number_view(self, value):
+        self._row_number_view = value
 
     @property
-    def education_row_number_view(self):
-        return self._education_row_number_view
+    def description_dict(self):
+        return self._description_dict
     
-    @education_row_number_view.setter
-    def education_row_number_view(self, value):
-        self._education_row_number_view = value
+    @description_dict.setter
+    def description_dict(self, value):
+        self._description_dict = value
 
-    @property
-    def sideproject_row_counter(self):
-        return self._sideproject_row_counter
-    
-    @sideproject_row_counter.setter
-    def sideproject_row_counter(self, value):
-        self._sideproject_row_counter = value
-
-    @property
-    def sideproject_row_number_view(self):
-        return self._sideproject_row_number_view
-    
-    @sideproject_row_number_view.setter
-    def sideproject_row_number_view(self, value):
-        self._sideproject_row_number_view = value
-
-    @property
-    def experience_row_counter(self):
-        return self._experience_row_counter
-    
-    @experience_row_counter.setter
-    def experience_row_counter(self, value):
-        self._experience_row_counter = value
-
-    @property
-    def experience_row_number_view(self):
-        return self._experience_row_number_view
-    
-    @experience_row_number_view.setter
-    def experience_row_number_view(self, value):    
-        self._experience_row_number_view = value
-
-    @property
-    def skills_row_counter(self):
-        return self._skills_row_counter
-    
-    @skills_row_counter.setter
-    def skills_row_counter(self, value):
-        self._skills_row_counter = value
-
-    @property
-    def skills_row_number_view(self):
-        return self._skills_row_number_view
-    
-    @skills_row_number_view.setter
-    def skills_row_number_view(self, value):
-        self._skills_row_number_view = value
+    def DictAppend(self, key, value):
+        self._description_dict[key] = value

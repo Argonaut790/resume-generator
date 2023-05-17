@@ -1,7 +1,8 @@
 from src.expend_layout import *
+
 KEY = "Formal Resume Generator 2023\n"
 
-def LoadData(window, row_counter, data_path:str) -> None:
+def LoadData(window, education_row_counter, sideproject_row_counter, experience_row_counter, skills_row_counter, data_path:str) -> None:
     try:
         f = open(data_path, "r")
     except:
@@ -18,30 +19,30 @@ def LoadData(window, row_counter, data_path:str) -> None:
         return
     # Get the count of rows
     count = lines[1].split(",")
-    education_count = int(count[0])
-    side_projects_count = int(count[1])
-    experience_count = int(count[2])
-    skills_count = int(count[3])
+    education_count = int(count[0]) - 1
+    side_projects_count = int(count[1]) - 1
+    experience_count = int(count[2]) - 1
+    skills_count = int(count[3]) - 1
     
     # Extend the layout
-    for i in range(1, education_count):
+    for i in range(1, education_count + 1):
         window.extend_layout(window["-EDUCATION_ROW_PANEL-"], [create_education(i, i+1)])
-    for i in range(1, side_projects_count):
+    for i in range(1, side_projects_count + 1):
         window.extend_layout(window["-SIDEPROJECT_ROW_PANEL-"], [create_sideproject(i, i+1)])
-    for i in range(1, experience_count):
+    for i in range(1, experience_count + 1):
         window.extend_layout(window["-EXPERIENCE_ROW_PANEL-"], [create_experience(i, i+1)])
-    for i in range(1, skills_count):
+    for i in range(1, skills_count + 1):
         window.extend_layout(window["-SKILLS_ROW_PANEL-"], [create_skills(i, i+1)])
 
     # Update row counter
-    row_counter.education_row_counter = education_count
-    row_counter.education_row_number_view = education_count + 1
-    row_counter.sideproject_row_counter = side_projects_count
-    row_counter.sideproject_row_number_view = side_projects_count + 1
-    row_counter.experience_row_counter = experience_count
-    row_counter.experience_row_number_view = experience_count + 1
-    row_counter.skills_row_counter = skills_count
-    row_counter.skills_row_number_view = skills_count + 1
+    education_row_counter.row_counter = education_count
+    education_row_counter.row_number_view = education_count + 1
+    sideproject_row_counter.row_counter = side_projects_count
+    sideproject_row_counter.row_number_view = side_projects_count + 1
+    experience_row_counter.row_counter = experience_count
+    experience_row_counter.row_number_view = experience_count + 1
+    skills_row_counter.row_counter = skills_count
+    skills_row_counter.row_number_view = skills_count + 1
 
     # refresh the window
     window.refresh()
