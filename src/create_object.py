@@ -1,15 +1,9 @@
 # Create data Object
 from src.classes.Heading import Heading
 from src.classes.Objective import Objective
-from src.classes.Content import Component
+from src.classes.Component import Component
 from src.classes.Skill import Skill
 from src.gui_metadata import *
-
-# from classes.Heading import Heading
-# from classes.Objective import Objective
-# from classes.Content import Component
-# from classes.Skill import Skill
-
 
 def create_heading_object(li:list) -> Component:
     if len(li) != HEADINGSFIELD:
@@ -49,93 +43,53 @@ def create_objective_object(li:list) -> Component:
         objective = li[0]
     return Objective(objective)
 
-def create_education_object(li:list) -> list:
-    if len(li) % EDUCATIONFIELD:
-        raise ValueError(f"Education list must have {EDUCATIONFIELD} elements")
-    education_list = []
-    for i in range(0, len(li), EDUCATIONFIELD):
-        if not li[i]:
-            education_name = "[Your Education]"
-        else:
-            education_name = li[i]
-        if not li[i+1]:
-            education_subTitle = "[Your Degree]"
-        else:
-            education_subTitle = li[i+1]
-        if not li[i+6]:
-            education_start = "[Start Month] [Start Year]"
-        else:
-            education_start = li[i+6]
-        if not li[i+7]:
-            education_end = "[End Month] [End Year]"
-        else:
-            education_end = li[i+7]
-        if not li[i+8]:
-            education_description = ["[Description]"]
-        else:
-            education_description = li[i+8]
-        education_list.append(Component(education_name, education_start, education_end, education_description, education_subTitle))
-    return education_list
-
-def create_side_projects_object(li:list) -> list:
-    if len(li) % (SIDEPROJECTFIELD - 1):
-        raise ValueError(f"Side Projects list must have {(SIDEPROJECTFIELD - 1)} elements")
-    side_projects_list = []
-    for i in range(0, len(li), (SIDEPROJECTFIELD - 1)):
-        if not li[i]:
-            side_projects_name = "[Your Projects]"
-        else:
-            side_projects_name = li[0]
-        if not li[i+5]:
-            side_projects_start = "[Start Month] [Start Year]"
-        else:
-            side_projects_start = li[i+5]
-        if not li[i+6]:
-            side_projects_end = "[End Month] [End Year]"
-        else:
-            side_projects_end = li[i+6]
-        if not li[i+7]:
-            side_projects_description = ["[Description]"]
-        else:
-            side_projects_description = li[7]
-        side_projects_list.append(Component(side_projects_name, side_projects_start, side_projects_end, side_projects_description))
-    return side_projects_list
-
-def create_experience_object(li:list) -> list:
-    if len(li) % EXPERIENCEFIELD:
-        raise ValueError(f"Experience list must have {EXPERIENCEFIELD} elements")
-    experience_list = []
-    for i in range(0, len(li), EXPERIENCEFIELD):
-        if not li[i]:
-            experience_name = "[Your Experience]"
-        else:
-            experience_name = li[i]
-        if not li[i+1]:
-            experience_subTitle = "[Your Position]"
-        else:
-            experience_subTitle = li[i+1]
-        if not li[i+6]:
-            experience_start = "[Start Month] [Start Year]"
-        else:
-            experience_start = li[i+6]
-        if not li[i+7]:
-            experience_end = "[End Month] [End Year]"
-        else:
-            experience_end = li[i+7]
-        if not li[i+8]:
-            experience_description = ["[Description]"]
-        else:
-            experience_description = li[i+8]
-        experience_list.append(Component(experience_name, experience_start, experience_end, experience_description, experience_subTitle))
-    return experience_list
+def create_object(content: dict, content_counter: int) -> list:
+    content_list = []
+    for i in range(content_counter):
+        component_object= Component("", "", "")
+        description_list = []
+        for key, value in content.items():
+            if key[1] == i:
+                if len(key) == 2:
+                    if key[0].endswith("NAME"):
+                        if not value:
+                            component_object.title = "[Title]"
+                        else:
+                            component_object.title = value
+                    elif key[0].endswith("START"):
+                        if not value:
+                            component_object.start = "[Start Month] [Start Year]"
+                        else:
+                            component_object.start = value
+                    elif key[0].endswith("END"):
+                        if not value:
+                            component_object.end = "[End Month] [End Year]"
+                        else:
+                            component_object.end = value
+                    elif key[0].endswith("DEGREE") or key[0].endswith("SUBTITLE"):
+                        if not value:
+                            component_object.subTitle = "[Subtitle]"
+                        else:
+                            component_object.subTitle = value
+                elif len(key) == 3:
+                    if key[0].endswith("LIST"):
+                        if not value:
+                            description_list.append("[Description]")
+                        else:
+                            description_list.append(value)
+                else:
+                    raise ValueError(f"Something wrong with the content key: {key}")
+        component_object.description = description_list
+        content_list.append(component_object)
+    return content_list
 
 def create_skill_object(li:list) -> list:
-    if len(li) % SKILLSFIELD:
+    if len(li) % (SKILLSFIELD-1):
         raise ValueError(f"Skill list must have {SKILLSFIELD} elements")
     skill_list = []
     for i in range(0, len(li), SKILLSFIELD):
         if not li[i]:
-            skill_category = "[Your Skills]"
+            skill_category = "[Skill Category]"
         else:
             skill_category = li[i]
         if not li[i+1]:

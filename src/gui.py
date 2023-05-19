@@ -6,14 +6,11 @@ import os
 from src.create_object import *
 from src.expend_layout import *
 from src.gui_metadata import *
-from src.SaveData import *
+from src.ResetKey import ResetKey
 from src.LoadData import LoadData
 from src.classes.RowCounter import RowCounter
 from src.classes.ListCounter import ListCounter
 from src.classes.RemovedContent import RemovedContent
-
-# from create_object import *
-# from LoadData import LoadData
 
 def move_center(window):
     screen_width, screen_height = window.get_screen_dimensions()
@@ -60,7 +57,7 @@ def gui(console_message) -> dict:
                 [sg.Button('Add', size=(ADDBUTTONWIDTH,BUTTONHEIGHT), enable_events=True, key="-PJ_ROW_ADD-", tooltip="Add Another Side Project Field")]]
     
     experience_layout = [[sg.Text('Experience', font='Arial 14 bold')],
-                [sg.Column([create_experience(0, 1)], key="-PJ_ROW_PANEL-", scrollable=True,  vertical_scroll_only=True, size=(COLUMNWIDTH, COLUMNHEIGHT))],
+                [sg.Column([create_experience(0, 1)], key="-EXP_ROW_PANEL-", scrollable=True,  vertical_scroll_only=True, size=(COLUMNWIDTH, COLUMNHEIGHT))],
                 [sg.Button('Add', size=(ADDBUTTONWIDTH,BUTTONHEIGHT), enable_events=True, key="-EXPE_ROW_ADD-", tooltip="Add Another Experience Field")]]
 
     skills_layout = [[sg.Text('Skills', font='Arial 14 bold')],
@@ -258,15 +255,10 @@ def gui(console_message) -> dict:
             if event[0].endswith("LIST_ADD"):
                 type = event[0].replace("_LIST_ADD", "")
                 row_counter = event[1]
-                print("LIST ADDING")
-                print(f"type = {type}, row = {row_counter}")
 
                 def ListAdd(field_type:str, row_counter, row_counter_object:RowCounter):
                     list_counter_object = row_counter_object.description_dict[row_counter]
                     list_counter_object.list_counter += 1
-                    print("LIST COUNTER")
-                    print(f"ROW = {list_counter_object.row_counter}")
-                    print(f"LIST = {list_counter_object.list_counter}")
                     window.extend_layout(window[(f"-{field_type}_LIST_PANEL-", row_counter)], [create_list(field_type, row_counter, list_counter_object.list_counter)])
                     # Update Scrollbar
                     window.refresh()
@@ -281,9 +273,7 @@ def gui(console_message) -> dict:
                     case "EXP":
                         ListAdd("EXP", row_counter, experience_row_counter)
             elif event[0].endswith("LIST_REMOVE"):
-                print("REMOVING")
                 type = event[0].replace("_LIST_REMOVE", "")
-                print(f"Type = {type}")
 
                 def ListRemove(field_type:str, row_counter, list_counter, removed_content_object:RemovedContent):
                     window[(f"-{field_type}_LIST-", row_counter, list_counter)].update(visible=False)
@@ -316,14 +306,26 @@ def gui(console_message) -> dict:
 
         # Generate
         if event == 'Generate':
+            # User Input Validation
             print(f"{values}")
+            
+            # Remove Old Data to prevent a huge amount of txt and docx files
+            txt_file_name = last_modified_filename + ".txt"
+            if last_modified_filename == "_resume":
+                docx_file_name = "[Your Name]_resume.docx"
+            else:
+                docx_file_name = last_modified_filename + "docx"
+
+            print(f"txt_file_name = {txt_file_name}")
+            print(f"docx_file_name = {docx_file_name}")
+
             try:
-                if os.path.exists(last_modified_filename + ".txt"):
-                    os.remove(last_modified_filename + ".txt")
-                    print(f"{last_modified_filename}.txt Data deleted")
-                if os.path.exists(last_modified_filename + ".docx"):
-                    os.remove(last_modified_filename + ".docx")
-                    print(f"{last_modified_filename}.docx Data deleted")
+                if os.path.exists(txt_file_name):
+                    os.remove(txt_file_name)
+                    print(f"{txt_file_name} Data deleted")
+                if os.path.exists(docx_file_name ):
+                    os.remove(docx_file_name)
+                    print(f"{docx_file_name} Data deleted")
                 window["RESPONSE"].update("Data deleted")
             except:
                 pass
@@ -347,7 +349,6 @@ def gui(console_message) -> dict:
             break
 
     # Remove Content
-
     def PopContent(removed_content_object: RemovedContent, content):
         content_copy = content.copy()
         # Get The Panel Removed List
@@ -355,38 +356,30 @@ def gui(console_message) -> dict:
             # Removed Row is True -> remove whole row
             if row_object.removed_row:
                 row = row_object.row_counter
-                print(f"ROWS {row} is going to be delected")
                 for key, value in content.items():
                     if key[1] == row:
                         res = content_copy.pop(key,f"KEY[1] {key} NOT FOUND")
-                        print(res)
             else:
                 # Removed Row is False -> check if there exist any list to remove
-                # print("REMOVED LIST")
-                # print(row_object.removed_list)
                 for list in row_object.removed_list:
-                    print(f"LIST {list} is going to be delected")
                     for key, value in content.items():
                         if len(key) == 3:
                             if key[2] == list:
                                 res = content_copy.pop(key,f"KEY[2] {key} NOT FOUND")
-                                print(res)
         return content_copy
     
-    # print("CHECKING BEFORE POP")
-    # print(education_content)
-    def PrintRemovedContent(removed_content:RemovedContent):
-        print("RESULT OF REMOVED CONTENT")
-        row_result = "["
-        print("LIST TO BE REMOVED")
-        for removed_row in removed_content.removed_list:
-            row_result += " " + str(removed_row.row_counter) + ","
-            print(f"ROW {removed_row.row_counter} " + str(removed_row.removed_list))
-        row_result += "]"
-        print("ROW TO BE REMOVED")
-        print(row_result)
+    # def PrintRemovedContent(removed_content:RemovedContent):
+    #     print("RESULT OF REMOVED CONTENT")
+    #     row_result = "["
+    #     print("LIST TO BE REMOVED")
+    #     for removed_row in removed_content.removed_list:
+    #         row_result += " " + str(removed_row.row_counter) + ","
+    #         print(f"ROW {removed_row.row_counter} " + str(removed_row.removed_list))
+    #     row_result += "]"
+    #     print("ROW TO BE REMOVED")
+    #     print(row_result)
 
-    PrintRemovedContent(removed_education_row)
+    # PrintRemovedContent(removed_education_row)
 
     # Remove the removed content in the dictionary
     education_content = PopContent(removed_education_row, education_content).copy()
@@ -394,19 +387,35 @@ def gui(console_message) -> dict:
     experience_content = PopContent(removed_experience_row, experience_content).copy()
     skills_content = PopContent(removed_skills_row, skills_content).copy()
 
-    print("CHECKING BEFORE RESET KEY")
-    print(heading_content)
-    print(objective_content)
-    print(education_content)
-    print(sideproject_content)
-    print(experience_content)
-    print(skills_content)
-
     # Reset the key to start from 1
-    education_content =  ResetKey(education_content, EDUCATIONFIELD).copy()
-    sideproject_content = ResetKey(sideproject_content, SIDEPROJECTFIELD).copy()
-    experience_content = ResetKey(experience_content, EXPERIENCEFIELD).copy()
-    skills_content = ResetKey(skills_content, SKILLSFIELD).copy()
+    reseted_education_content = ResetKey(education_content, EDUCATIONFIELD)
+    reseted_sideproject_content = ResetKey(sideproject_content, SIDEPROJECTFIELD)
+    reseted_experience_content = ResetKey(experience_content, EXPERIENCEFIELD)
+    reseted_skills_content = ResetKey(skills_content, SKILLSFIELD)
+
+    # Get the reseted ket index content
+    education_content =  reseted_education_content[0].copy()
+    sideproject_content = reseted_sideproject_content[0].copy()
+    experience_content = reseted_experience_content[0].copy()
+    skills_content = reseted_skills_content[0].copy()
+
+    # Get the count number of each field
+    education_content_counter = reseted_education_content[1]
+    sideproject_content_counter = reseted_sideproject_content[1]
+    experience_content_counter = reseted_experience_content[1]
+
+    # Get the Description List Count
+    education_list_counter = reseted_education_content[2]
+    sideproject_list_counter = reseted_sideproject_content[2]
+    experience_list_counter = reseted_experience_content[2]
+
+    # print("CHECKING AFTER RESET KEY")
+    # print(heading_content)
+    # print(objective_content)
+    # print(education_content)
+    # print(sideproject_content)
+    # print(experience_content)
+    # print(skills_content)
 
     # Only Retrieve the values, not include the key
     def RetrieveValue(content:dict):
@@ -417,9 +426,6 @@ def gui(console_message) -> dict:
     
     massaged_heading_content = RetrieveValue(heading_content)
     massaged_objective_content = RetrieveValue(objective_content)
-    massaged_education_content = RetrieveValue(education_content)
-    massaged_sideproject_content = RetrieveValue(sideproject_content)
-    massaged_experience_content = RetrieveValue(experience_content)
     massaged_skills_content = RetrieveValue(skills_content)
 
     #save resume data
@@ -428,6 +434,9 @@ def gui(console_message) -> dict:
         f = open(file_name + ".txt", "w")
         f.write("Formal Resume Generator 2023\n")
         f.write(f"{education_row_counter.row_number_view}, {sideproject_row_counter.row_number_view}, {experience_row_counter.row_number_view}, {skills_row_counter.row_number_view}\n")
+        f.write(f"{education_list_counter}\n")
+        f.write(f"{sideproject_list_counter}\n")
+        f.write(f"{experience_list_counter}\n")
         f.write(str(heading_content) + "\n")
         f.write(str(objective_content) + "\n")
         f.write(str(education_content) + "\n")
@@ -446,9 +455,9 @@ def gui(console_message) -> dict:
     window.close()
     return [create_heading_object(massaged_heading_content), 
             create_objective_object(massaged_objective_content), 
-            create_education_object(massaged_education_content), 
-            create_side_projects_object(massaged_sideproject_content), 
-            create_experience_object(massaged_experience_content), 
+            create_object(education_content, education_content_counter), 
+            create_object(sideproject_content, sideproject_content_counter), 
+            create_object(experience_content, experience_content_counter), 
             create_skill_object(massaged_skills_content)]
 
 if __name__ == "__main__":
