@@ -7,3 +7,6 @@ classes/__pycache__/
 
 # env
 env_data.txt
+
+# data
+*_resume.txt
