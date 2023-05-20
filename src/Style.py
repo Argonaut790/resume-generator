@@ -5,7 +5,7 @@ from docx.shared import Pt, Cm, RGBColor
 from src.horizontal_line import insertHR
 import src.resume_metadata as data
 
-def HeadingStyle(paragraph) -> None:
+def HeadingStyle(paragraph, dual=True) -> None:
     paragraph_format = paragraph.paragraph_format
     paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
     paragraph_format.space_before = 0
@@ -15,10 +15,11 @@ def HeadingStyle(paragraph) -> None:
     paragraph.runs[0].font.size = Pt(11)
     paragraph.runs[1].bold = False
     paragraph.runs[1].font.size = Pt(11)
-    paragraph.runs[2].bold = True
-    paragraph.runs[2].font.size = Pt(11)
-    paragraph.runs[3].bold = False
-    paragraph.runs[3].font.size = Pt(11)
+    if dual:
+        paragraph.runs[2].bold = True
+        paragraph.runs[2].font.size = Pt(11)
+        paragraph.runs[3].bold = False
+        paragraph.runs[3].font.size = Pt(11)
 
 def SubHeadingStyle(paragraph) -> None:
     paragraph_format = paragraph.paragraph_format

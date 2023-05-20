@@ -7,8 +7,9 @@ import subprocess
 from src.Style import *
 import src.resume_metadata as data
 from src.gui import gui
+from src.gui_metadata import VERSION
 
-def Heading(document, heading_content) -> None:
+def Heading(document, heading_content, toggle_data) -> None:
     #First Line
     name = document.add_paragraph(heading_content.name + ", " + heading_content.nickname)
     name_format = name.paragraph_format
@@ -27,11 +28,20 @@ def Heading(document, heading_content) -> None:
     HeadingStyle(secondLine)
 
     #Third Line
-    thirdLine = document.add_paragraph("Github: ")
-    thirdLine.add_run(heading_content.github)
-    thirdLine.add_run(" Website: ")
-    thirdLine.add_run(heading_content.website)
-    HeadingStyle(thirdLine)
+    if toggle_data[0] and not toggle_data[1]:
+        thirdLine = document.add_paragraph("Github: ")
+        thirdLine.add_run(heading_content.github)
+        HeadingStyle(thirdLine, False)
+    elif not toggle_data[0] and toggle_data[1]:
+        thirdLine = document.add_paragraph("Website: ")
+        thirdLine.add_run(heading_content.website)
+        HeadingStyle(thirdLine, False)
+    elif toggle_data[0] and toggle_data[1]:
+        thirdLine = document.add_paragraph("Github: ")
+        thirdLine.add_run(heading_content.github)
+        thirdLine.add_run(" Website: ")
+        thirdLine.add_run(heading_content.website)
+        HeadingStyle(thirdLine)
 
 def Objective(document, objective_content) -> None:
     heading = document.add_paragraph("OBJECTIVE")
@@ -139,6 +149,7 @@ def main(console_message:str = None) -> None:
     side_projects_data = user_data[3]
     experience_data = user_data[4]
     skills_data = user_data[5]
+    toggle_data = user_data[6]
 
     # Create Document
     document = Document()
@@ -161,11 +172,15 @@ def main(console_message:str = None) -> None:
         section.page_height = Mm(297)
         section.page_width = Mm(210)
 
-    Heading(document, heading_data)
+    Heading(document, heading_data, toggle_data)
     Objective(document, objective_data)
     Education(document, education_data)
-    SideProjects(document, side_projects_data)
-    Experience(document, experience_data)
+    if toggle_data[2]:
+        SideProjects(document, side_projects_data)
+        Experience(document, experience_data)
+    else:
+        Experience(document, experience_data)
+        SideProjects(document, side_projects_data)
     Skills(document, skills_data)
 
     # Meta Data
@@ -192,7 +207,7 @@ if __name__ == "__main__":
     __author__ = "TSE Hui Tung"
     __copyright__ = "Copyright 2023, Formal Resume Generator"
     __license__ = "MIT"
-    __version__ = "1.0.0"
+    __version__ = f"{VERSION}"
     __maintainer__ = "TSE Hui Tung"
     __email__ = "tung23966373@gmail.com"
     __status__ = "Production"

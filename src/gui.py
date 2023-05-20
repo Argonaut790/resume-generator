@@ -23,9 +23,9 @@ def gui(console_message) -> dict:
     sg.theme(data.THEME)   
     font = ("Arial", 11)
     
-    menu_layout = [['File', ['Open', 'Save', 'Exit', 'Properties']],
-                ['Edit', ['Paste', ['Special', 'Normal', ], 'Undo'], ],
-                ['Help', 'About...'], ]
+    # menu_layout = [['File', ['Open', 'Save', 'Exit', 'Properties']],
+    #             ['Edit', ['Paste', ['Special', 'Normal', ], 'Undo'], ],
+    #             ['Help', 'About...'], ]
 
     instruction_layout = [ [sg.Text('Instruction', font='Arial 14 bold')],
                             [sg.Text("This is a Formal Resume Generator, for more infomation, please refer to"),
@@ -37,12 +37,19 @@ def gui(console_message) -> dict:
 
     browse_old_data_layout = [[sg.Text('Browse Old Data', font='Arial 14 bold')],
                             [sg.Text("Please select the old data file", size=(21,1)), sg.InputText(key="OLD_DATA_PATH", size=(50,1), use_readonly_for_disable=True, disabled=True, disabled_readonly_background_color=sg.theme_background_color(), disabled_readonly_text_color=sg.theme_text_color()), sg.FileBrowse(key="BROWSE_DATA", size=(8,1)),
-                            sg.Button('Load', size=(8,1), key="LOAD_DATA", tooltip="Load Old Data")]]
+                            sg.Button('Load', size=(8,1), key="LOAD_DATA", tooltip="Load Old Data"),
+                            sg.Text('Show GitHub', key="GITHUBLINK-TXT"),
+                            sg.Button(image_data=BTN_OFF, key='-TOGGLE-GITHUBLINK-', button_color=(sg.theme_background_color(), sg.theme_background_color()), border_width=0, metadata=False),
+                            sg.Text('Show Website', key="WEBSITELINK-TXT"),
+                            sg.Button(image_data=BTN_OFF, key='-TOGGLE-WEBSITELINK-', button_color=(sg.theme_background_color(), sg.theme_background_color()), border_width=0, metadata=False),
+                            sg.Text('SideProject First', key="PJ-EXP-TXT"),
+                            sg.Button(image_data=BTN_OFF, key='-TOGGLE-PJ-EXP-', button_color=(sg.theme_background_color(), sg.theme_background_color()), border_width=0, metadata=False),
+                            ]]
     
     heading_layout = [  [sg.Text('Heading', font='Arial 14 bold')],
                 [sg.Text('Name', size=(8,1)), sg.InputText(key="NAME", size=(25,1), ), sg.Text('Nickname', size=(8,1)), sg.InputText(key="NICKNAME", size=(25,1))],
                 [sg.Text('Telephone', size=(8,1)), sg.InputText(key="TELEPHONE", size=(25,1)), sg.Text('Email', size=(8,1)), sg.InputText(key="EMAIL", size=(25,1))],
-                [sg.Text('Github Link', size=(8,1)), sg.InputText(key="GITHUBLINK", size=(25,1)), sg.Text('Web Link', size=(8,1)), sg.InputText(key="WEBLINK", size=(25,1))],
+                [sg.Text('Github Link', size=(8,1)), sg.InputText(key="GITHUBLINK", size=(25,1), use_readonly_for_disable=True, disabled_readonly_background_color=sg.theme_background_color()), sg.Text('Web Link', size=(8,1)), sg.InputText(key="WEBSITELINK", size=(25,1), use_readonly_for_disable=True, disabled_readonly_background_color=sg.theme_background_color())],
                  ]
                       
     objective_layout = [[sg.Text('Objective', font='Arial 14 bold')],
@@ -58,7 +65,7 @@ def gui(console_message) -> dict:
     
     experience_layout = [[sg.Text('Experience', font='Arial 14 bold')],
                 [sg.Column([create_experience(0, 1)], key="-EXP_ROW_PANEL-", scrollable=True,  vertical_scroll_only=True, size=(COLUMNWIDTH, COLUMNHEIGHT))],
-                [sg.Button('Add', size=(ADDBUTTONWIDTH,BUTTONHEIGHT), enable_events=True, key="-EXPE_ROW_ADD-", tooltip="Add Another Experience Field")]]
+                [sg.Button('Add', size=(ADDBUTTONWIDTH,BUTTONHEIGHT), enable_events=True, key="-EXP_ROW_ADD-", tooltip="Add Another Experience Field")]]
 
     skills_layout = [[sg.Text('Skills', font='Arial 14 bold')],
                 [sg.Column([create_skills(0, 1)], key="-SKILLS_ROW_PANEL-", scrollable=True,  vertical_scroll_only=True, size=(COLUMNWIDTH, COLUMNHEIGHT))],
@@ -102,9 +109,18 @@ def gui(console_message) -> dict:
     experience_row_counter = RowCounter("EXP", 0, 1)
     skills_row_counter = RowCounter("SKILL", 0, 1)
 
+    # Toggle Event
+    toggle_data = [True, True, True]
+
     # Updata console message
     if console_message:
-        LoadData(window, education_row_counter, sideproject_row_counter, experience_row_counter, skills_row_counter, os.getcwd() + "\\" + last_modified_filename + ".txt")
+        LoadData(window, education_row_counter, sideproject_row_counter, experience_row_counter, skills_row_counter, os.getcwd() + "\\" + "output" + "\\" + last_modified_filename + ".txt")
+        if window['-TOGGLE-GITHUBLINK-'].metadata:
+                toggle_data[0] = False
+        if window['-TOGGLE-WEBSITELINK-'].metadata:
+                toggle_data[1] = False
+        if window['-TOGGLE-PJ-EXP-'].metadata:
+                toggle_data[2] = False
         window["RESPONSE"].update(console_message)
 
     # Object list
@@ -141,6 +157,49 @@ def gui(console_message) -> dict:
                      sideproject_row_counter, experience_row_counter, 
                      skills_row_counter, 
                      values["OLD_DATA_PATH"])
+            if window['-TOGGLE-GITHUBLINK-'].metadata:
+                toggle_data[0] = False
+            if window['-TOGGLE-WEBSITELINK-'].metadata:
+                toggle_data[1] = False
+            if window['-TOGGLE-PJ-EXP-'].metadata:
+                toggle_data[2] = False
+
+        # Github Link Toggle Button
+        if event == "-TOGGLE-GITHUBLINK-":  # if the graphical button that changes images
+            window['-TOGGLE-GITHUBLINK-'].metadata = not window['-TOGGLE-GITHUBLINK-'].metadata
+            window['-TOGGLE-GITHUBLINK-'].update(image_data=BTN_ON if window['-TOGGLE-GITHUBLINK-'].metadata else BTN_OFF)
+            if window['-TOGGLE-GITHUBLINK-'].metadata:
+                window["GITHUBLINK"].update(disabled=True)
+                window["GITHUBLINK-TXT"].update("Hide GitHub")
+                toggle_data[0] = False
+            else:
+                window["GITHUBLINK"].update(disabled=False)
+                window["GITHUBLINK-TXT"].update("Show GitHub")
+                toggle_data[0] = True
+        
+        # Linkin Link Toggle Button
+        if event == "-TOGGLE-WEBSITELINK-":  # if the graphical button that changes images
+            window['-TOGGLE-WEBSITELINK-'].metadata = not window['-TOGGLE-WEBSITELINK-'].metadata
+            window['-TOGGLE-WEBSITELINK-'].update(image_data=BTN_ON if window['-TOGGLE-WEBSITELINK-'].metadata else BTN_OFF)
+            if window['-TOGGLE-WEBSITELINK-'].metadata:
+                window["WEBSITELINK"].update(disabled=True)
+                window["WEBSITELINK-TXT"].update("Hide Website")
+                toggle_data[1] = False
+            else:
+                window["WEBSITELINK"].update(disabled=False)
+                window["WEBSITELINK-TXT"].update("Show Website")
+                toggle_data[1] = True
+        
+        # Display Side Project First Toggle Button
+        if event == "-TOGGLE-PJ-EXP-":  # if the graphical button that changes images
+            window['-TOGGLE-PJ-EXP-'].metadata = not window['-TOGGLE-PJ-EXP-'].metadata
+            window['-TOGGLE-PJ-EXP-'].update(image_data=BTN_ON if window['-TOGGLE-PJ-EXP-'].metadata else BTN_OFF)
+            if window['-TOGGLE-PJ-EXP-'].metadata:
+                window["PJ-EXP-TXT"].update("Experience First")
+                toggle_data[2] = False
+            else:
+                window["PJ-EXP-TXT"].update("SideProject First")
+                toggle_data[2] = True
 
         # Preview Date
         if isinstance(event, tuple):
@@ -194,6 +253,7 @@ def gui(console_message) -> dict:
             for i in range(1, experience_row_counter.description_dict[0].list_counter + 1):
                 window[("-EXP_LIST-", 0, i)].update(visible=False)
 
+            # Reset Object
             education_row_counter.row_number_view = 1
             sideproject_row_counter.row_number_view = 1
             experience_row_counter.row_number_view = 1
@@ -326,11 +386,11 @@ def gui(console_message) -> dict:
                     print(f"{docx_file_name} Data deleted")
                 window["RESPONSE"].update("Data deleted")
             except:
-                raise Exception("Error: Data not deleted, close the file before delete")
+                pass
             
             # Values Seperation
             for key, value in values.items():
-                heading = ["NAME", "NICKNAME", "TELEPHONE", "EMAIL", "GITHUBLINK", "WEBLINK"]
+                heading = ["NAME", "NICKNAME", "TELEPHONE", "EMAIL", "GITHUBLINK", "WEBSITELINK"]
                 if key in heading:
                     heading_content[key] = value
                 if key == "OBJECTIVE":
@@ -422,6 +482,7 @@ def gui(console_message) -> dict:
         f.write(str(sideproject_content) + "\n")
         f.write(str(experience_content) + "\n")
         f.write(str(skills_content) + "\n")
+        f.write(str(toggle_data) + "\n")
         f.close()
     except:
         print("Error: Can't Save the data file, please close it and try again.")
@@ -437,7 +498,8 @@ def gui(console_message) -> dict:
             create_object(education_content, education_content_counter), 
             create_object(sideproject_content, sideproject_content_counter), 
             create_object(experience_content, experience_content_counter), 
-            create_skill_object(massaged_skills_content)]
+            create_skill_object(massaged_skills_content),
+            toggle_data]
 
 if __name__ == "__main__":
     gui()

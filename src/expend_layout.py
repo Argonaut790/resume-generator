@@ -23,7 +23,7 @@ def duration(type:str, row_counter) -> list:
 def create_list(type:str, row_counter, list_counter):
     list = [sg.pin(
         sg.Column(
-                [[ sg.Text(f"List , counter {list_counter}", font='Arial 11 bold', size=(data.FIRSTTEXTWIDTH,1)),
+                [[ sg.Text(f"List", font='Arial 11 bold', size=(data.FIRSTTEXTWIDTH,1)),
                  sg.InputText(key=(f"{type}_LIST", row_counter, list_counter), size=(data.DESCRIPTIONWIDTH,1)), 
                  sg.Button('Remove', size=(data.DESCRIPTIONREMOVEBUTTONWIDTH,1), enable_events=True, key=(f"{type}_LIST_REMOVE", row_counter, list_counter), tooltip="Remove Description", pad=(1,0))]],
                 key=(f"-{type}_LIST-", row_counter, list_counter),
@@ -41,7 +41,7 @@ def description_layout(type:str, row_counter) -> list:
 # add button which can expand another objective input field
 def create_education(row_counter, row_number_view) -> list:
     row = [sg.pin(
-        sg.Column([[sg.Text(f"#{row_number_view}, counter {row_counter}", font='Arial 11 bold'), sg.Button('Remove', size=(data.REMOVEBUTTONWIDTH,data.BUTTONHEIGHT), enable_events=True, key=("-EDUCATION_ROW_REMOVE-", row_counter), tooltip="Delete Education Field")],
+        sg.Column([[sg.Text(f"#{row_number_view}", font='Arial 11 bold'), sg.Button('Remove', size=(data.REMOVEBUTTONWIDTH,data.BUTTONHEIGHT), enable_events=True, key=("-EDUCATION_ROW_REMOVE-", row_counter), tooltip="Delete Education Field")],
                 [sg.Text('School Name', size=(data.FIRSTTEXTWIDTH,1)), sg.InputText(key=("EDUCATION_NAME", row_counter), size=(data.INPUTWIDTH,1)), sg.Text('Degree', size=(data.SECONDTEXTWIDTH,1)), sg.InputText(key=("EDUCATION_DEGREE", row_counter), size=(data.INPUTWIDTH,1))],
                 [sg.Column(duration("EDUCATION", row_counter), pad=(0,0))],
                 [sg.Column(description_layout("EDUCATION", row_counter), pad=(0,0))]],
@@ -52,7 +52,7 @@ def create_education(row_counter, row_number_view) -> list:
 
 def create_sideproject(row_counter, row_number_view) -> list:
     row = [sg.pin(
-        sg.Column([[sg.Text(f"# {row_number_view}, counter {row_counter}", font='Arial 11 bold'), sg.Button('Remove', size=(data.REMOVEBUTTONWIDTH,data.BUTTONHEIGHT), enable_events=True, key=("-PJ_ROW_REMOVE-", row_counter), tooltip="Delete Side Project Field")],
+        sg.Column([[sg.Text(f"# {row_number_view}", font='Arial 11 bold'), sg.Button('Remove', size=(data.REMOVEBUTTONWIDTH,data.BUTTONHEIGHT), enable_events=True, key=("-PJ_ROW_REMOVE-", row_counter), tooltip="Delete Side Project Field")],
              [sg.Text('Title', size=(data.FIRSTTEXTWIDTH,1)), sg.InputText(key=("PJ_NAME", row_counter), size=(data.FULLWIDTH+2,1))],
             [sg.Column(duration("PJ", row_counter), pad=(0,0))],
             [sg.Column(description_layout("PJ", row_counter), pad=(0,0))]],
@@ -63,7 +63,7 @@ def create_sideproject(row_counter, row_number_view) -> list:
 
 def create_experience(row_counter, row_number_view) -> list:
     row = [sg.pin(
-        sg.Column([[sg.Text(f"# {row_number_view}, counter {row_counter}", font='Arial 11 bold'), sg.Button('Remove', size=(data.REMOVEBUTTONWIDTH,data.BUTTONHEIGHT), enable_events=True, key=("-EXP_ROW_REMOVE-", row_counter), tooltip="Delete Experience Field")],
+        sg.Column([[sg.Text(f"# {row_number_view}", font='Arial 11 bold'), sg.Button('Remove', size=(data.REMOVEBUTTONWIDTH,data.BUTTONHEIGHT), enable_events=True, key=("-EXP_ROW_REMOVE-", row_counter), tooltip="Delete Experience Field")],
                 [sg.Text('Name', size=(data.FIRSTTEXTWIDTH,1)), sg.InputText(key=("EXP_NAME", row_counter), size=(data.INPUTWIDTH,1)), sg.Text('Subtitle', size=(data.SECONDTEXTWIDTH,1)), sg.InputText(key=("EXP_SUBTITLE", row_counter), size=(data.INPUTWIDTH,1))],
                 [sg.Column(duration("EXP", row_counter), pad=(0,0))],
                 [sg.Column(description_layout("EXP", row_counter), pad=(0,0))]],
@@ -74,7 +74,7 @@ def create_experience(row_counter, row_number_view) -> list:
 
 def create_skills(row_counter, row_number_view) -> list:
     row = [sg.pin(
-        sg.Column([[sg.Text(f"# {row_number_view}, counter {row_counter}", font='Arial 11 bold'), sg.Button('Remove', size=(data.REMOVEBUTTONWIDTH,data.BUTTONHEIGHT), enable_events=True, key=("-SKILLS_ROW_REMOVE-", row_counter), tooltip="Delete Skills Field")],
+        sg.Column([[sg.Text(f"# {row_number_view}", font='Arial 11 bold'), sg.Button('Remove', size=(data.REMOVEBUTTONWIDTH,data.BUTTONHEIGHT), enable_events=True, key=("-SKILLS_ROW_REMOVE-", row_counter), tooltip="Delete Skills Field")],
                 [sg.Text('Category', size=(data.FIRSTTEXTWIDTH,1)), sg.InputText(key=("SKILL_CATEGORY", row_counter), size=(data.INPUTWIDTH,1))],
                 [sg.Text('List', size=(data.FIRSTTEXTWIDTH,1)), sg.InputText(key=("SKILL_LIST", row_counter), size=(data.FULLWIDTH+2,1))]],
                 key=("-SKILLS_ROW-", row_counter),

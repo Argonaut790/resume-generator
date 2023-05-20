@@ -1,4 +1,5 @@
 from src.expend_layout import *
+from src.gui_metadata import *
 
 KEY = "Formal Resume Generator 2023\n"
 
@@ -88,6 +89,35 @@ def LoadData(window, education_row_counter, sideproject_row_counter, experience_
     sideproject_content = eval(lines[8].replace("'", "\"").strip())
     experience_content = eval(lines[9].replace("'", "\"").strip())
     skills_content = eval(lines[10].replace("'", "\"").strip())
+
+    # Get the toggle data
+    toggle_data = lines[11].strip('][\n').split(', ')
+    if toggle_data[0] == "False":
+        window['-TOGGLE-GITHUBLINK-'].metadata = True
+        window["GITHUBLINK"].update(disabled=True)
+        window["GITHUBLINK-TXT"].update("Hide GitHub")
+    else:
+        window['-TOGGLE-GITHUBLINK-'].metadata = False
+        window["GITHUBLINK"].update(disabled=False)
+        window["GITHUBLINK-TXT"].update("Show GitHub")
+    if toggle_data[1] == "False":
+        window['-TOGGLE-WEBSITELINK-'].metadata = True
+        window["WEBSITELINK"].update(disabled=True)
+        window["WEBSITELINK-TXT"].update("Hide Website")
+    else:
+        window['-TOGGLE-WEBSITELINK-'].metadata = False
+        window["WEBSITELINK"].update(disabled=False)
+        window["WEBSITELINK-TXT"].update("Show Website")
+    if toggle_data[2] == "False":
+        window['-TOGGLE-PJ-EXP-'].metadata = True
+        window["PJ-EXP-TXT"].update("Experience First")
+    else:
+        window['-TOGGLE-PJ-EXP-'].metadata = False
+        window["PJ-EXP-TXT"].update("SideProject First")
+    # Update the toggle button
+    window['-TOGGLE-GITHUBLINK-'].update(image_data=BTN_ON if window['-TOGGLE-GITHUBLINK-'].metadata else BTN_OFF)        
+    window['-TOGGLE-WEBSITELINK-'].update(image_data=BTN_ON if window['-TOGGLE-WEBSITELINK-'].metadata else BTN_OFF)
+    window['-TOGGLE-PJ-EXP-'].update(image_data=BTN_ON if window['-TOGGLE-PJ-EXP-'].metadata else BTN_OFF)
 
     # Update data
     for key, value in heading_content.items():
