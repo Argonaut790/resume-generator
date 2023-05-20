@@ -6,7 +6,6 @@ def ResetKey(content:dict, InputNumber:int) -> dict:
     for key, value in content.items():
         if len(key) == 2:
             count += 1
-    print(f"count = {count}, InputNumber = {InputNumber}")
     # Check if the content is in correct format
     # Input Number - 1 since the description list's key length is not 2  
     if not count % (InputNumber-1):
@@ -21,15 +20,6 @@ def ResetKey(content:dict, InputNumber:int) -> dict:
         for key, value in content.items():
             count += 1
             current_key_index = key[1]
-            print("INFO VALIDATION:")
-            print(f"key = {key}, value = {value}")
-            print(f"current_key_index = {current_key_index}")
-            print(f"previous_key_index = {previous_key_index}")
-            print(f"index = {index}")
-            print(f"list_index = {list_index}")
-            print(f"count = {count}")
-            print(f"count length = {len(content)}")
-            print("------------------------------------------")
             if not current_key_index == previous_key_index:
                 # Since Current is already the next key
                 index += 1 
@@ -37,8 +27,6 @@ def ResetKey(content:dict, InputNumber:int) -> dict:
                 list_index = 0
             elif count == len(content):
                 # append the list index of the last key, this key is not the next key, hence need add one for list_index
-                print("last key")
-                print(f"list_index = {list_index}")
                 list_count_list.append(list_index + 1)
             if len(key) == 2:
                 reseted_key_index_dict[key[0], index] = value

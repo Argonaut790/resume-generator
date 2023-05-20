@@ -89,14 +89,6 @@ def LoadData(window, education_row_counter, sideproject_row_counter, experience_
     experience_content = eval(lines[9].replace("'", "\"").strip())
     skills_content = eval(lines[10].replace("'", "\"").strip())
 
-    # print data
-    print("heading_content = ", heading_content)
-    print("objective_content = ", objective_content)
-    print("education_content = ", education_content)
-    print("sideproject_content = ", sideproject_content)
-    print("experience_content = ", experience_content)
-    print("skills_content = ", skills_content)
-
     # Update data
     for key, value in heading_content.items():
         window[key].update(value)

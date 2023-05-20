@@ -1,6 +1,7 @@
 from docx import Document
 from docx.shared import Pt, Cm, Mm
 from docx.enum.text import WD_ALIGN_PARAGRAPH
+from os import getcwd
 import subprocess
 
 from src.Style import *
@@ -177,8 +178,9 @@ def main(console_message:str = None) -> None:
     
     # Save File
     try:
-        document.save(heading_data.name + "_resume.docx")
-        shell_process = subprocess.Popen([heading_data.name + "_resume.docx"], shell=True) 
+        save_path = getcwd() + "\\" + "output" + "\\" + heading_data.name + "_resume.docx"
+        document.save(save_path)
+        shell_process = subprocess.Popen([save_path], shell=True) 
         shell_process.wait()
         print("File saved successfully")
     except:

@@ -41,8 +41,12 @@ SIDEPROJECTFIELD = 8
 EXPERIENCEFIELD = 9
 SKILLSFIELD = 3
 # Keys to clear
-KEYS_TO_CLEAR = ["NAME", "NICKNAME", "TELEPHONE", "EMAIL", "GITHUBLINK", "WEBLINK", "OBJECTIVE", 
-                 ("EDUCATION_NAME", 0), ("EDUCATION_DEGREE", 0), ("EDUCATION_START", 0), ("EDUCATION_END", 0), ("EDUCATION_LIST", 0, 0), 
-                 ("PJ_NAME", 0), ("PJ_START", 0), ("PJ_END", 0), ("PJ_LIST", 0, 0), 
-                 ("EXP_NAME", 0), ("EXP_START", 0), ("EXP_END", 0), ("EXP_SUBTITLE", 0), ("EXP_LIST", 0, 0), 
-                 ("SKILL_CATEGORY", 0), ("SKILL_LIST", 0)]
+KEYS_TO_CLEAR = ["NAME", "NICKNAME", "TELEPHONE", "EMAIL", "GITHUBLINK", "WEBLINK", "OBJECTIVE",
+                 ("EDUCATION_NAME", 0), ("EDUCATION_DEGREE", 0), ('EDUCATION_START_MON', 0), 
+                 ('EDUCATION_START_YEAR', 0), ('EDUCATION_END_MON', 0), ('EDUCATION_END_YEAR', 0),
+                 ("EDUCATION_START", 0), ("EDUCATION_END", 0), ("EDUCATION_LIST", 0, 0), 
+                 ("PJ_NAME", 0), ('PJ_START_MON', 0), ('PJ_START_YEAR', 0), ('PJ_END_MON', 0),
+                 ('PJ_END_YEAR', 0), ("PJ_START", 0), ("PJ_END", 0), ("PJ_LIST", 0, 0), 
+                 ("EXP_NAME", 0), ("EXP_SUBTITLE", 0), ('EXP_START_MON', 0), ('EXP_START_YEAR', 0),
+                 ('EXP_END_MON', 0), ('EXP_END_YEAR', 0), ("EXP_START", 0), ("EXP_END", 0), 
+                 ("EXP_LIST", 0, 0), ("SKILL_CATEGORY", 0), ("SKILL_LIST", 0)]

@@ -95,7 +95,6 @@ def gui(console_message) -> dict:
         f.close()
     else:
         last_modified_filename = ""
-    print(f"last modified filename = {last_modified_filename}")
 
     # Create Row Counter Object
     education_row_counter = RowCounter("EDUCATION", 0, 1)
@@ -105,7 +104,6 @@ def gui(console_message) -> dict:
 
     # Updata console message
     if console_message:
-        print(f"current working directory: {os.getcwd()}")
         LoadData(window, education_row_counter, sideproject_row_counter, experience_row_counter, skills_row_counter, os.getcwd() + "\\" + last_modified_filename + ".txt")
         window["RESPONSE"].update(console_message)
 
@@ -143,9 +141,7 @@ def gui(console_message) -> dict:
                      sideproject_row_counter, experience_row_counter, 
                      skills_row_counter, 
                      values["OLD_DATA_PATH"])
-            print("COUNTER")
-            print(f"Counter : {education_row_counter.row_counter}, # : {education_row_counter.row_number_view}")
-        
+
         # Preview Date
         if isinstance(event, tuple):
             if event[0].endswith("MON"):
@@ -178,12 +174,10 @@ def gui(console_message) -> dict:
         
         # Clear all input
         if event == "CLEAN":
-            # TODO: reset to 1 row in each of them, also key are now tuple
-            print("CLEAN")
-            print(education_row_counter.row_counter)
-            print(sideproject_row_counter.row_counter)
+            # CLEAN INPUT FIELD
             for key in KEYS_TO_CLEAR:
                 window[key]('')
+            # REMOVE ROW
             for i in range(1, education_row_counter.row_counter + 1):
                 window[("-EDUCATION_ROW-", i)].update(visible=False)
             for i in range(1, sideproject_row_counter.row_counter + 1):
@@ -192,6 +186,13 @@ def gui(console_message) -> dict:
                 window[("-EXP_ROW-", i)].update(visible=False)
             for i in range(1, skills_row_counter.row_counter + 1):
                 window[("-SKILLS_ROW-", i)].update(visible=False)
+            # REMOVE LIST
+            for i in range(1, education_row_counter.description_dict[0].list_counter + 1):
+                window[("-EDUCATION_LIST-", 0, i)].update(visible=False)
+            for i in range(1, sideproject_row_counter.description_dict[0].list_counter + 1):
+                window[("-PJ_LIST-", 0, i)].update(visible=False)
+            for i in range(1, experience_row_counter.description_dict[0].list_counter + 1):
+                window[("-EXP_LIST-", 0, i)].update(visible=False)
 
             education_row_counter.row_number_view = 1
             sideproject_row_counter.row_number_view = 1
@@ -311,24 +312,21 @@ def gui(console_message) -> dict:
             
             # Remove Old Data to prevent a huge amount of txt and docx files
             txt_file_name = last_modified_filename + ".txt"
-            if last_modified_filename == "_resume":
-                docx_file_name = "[Your Name]_resume.docx"
-            else:
-                docx_file_name = last_modified_filename + "docx"
+            docx_file_name = last_modified_filename + ".docx"
 
-            print(f"txt_file_name = {txt_file_name}")
-            print(f"docx_file_name = {docx_file_name}")
+            test_file_path = os.getcwd() + "\\" + "output"  + "\\" + txt_file_name
+            docx_file_path = os.getcwd() + "\\" + "output"  + "\\" + docx_file_name
 
             try:
-                if os.path.exists(txt_file_name):
-                    os.remove(txt_file_name)
+                if os.path.exists(test_file_path):
+                    os.remove(test_file_path)
                     print(f"{txt_file_name} Data deleted")
-                if os.path.exists(docx_file_name ):
-                    os.remove(docx_file_name)
+                if os.path.exists(docx_file_path):
+                    os.remove(docx_file_path)
                     print(f"{docx_file_name} Data deleted")
                 window["RESPONSE"].update("Data deleted")
             except:
-                pass
+                raise Exception("Error: Data not deleted, close the file before delete")
             
             # Values Seperation
             for key, value in values.items():
@@ -367,19 +365,6 @@ def gui(console_message) -> dict:
                             if key[2] == list:
                                 res = content_copy.pop(key,f"KEY[2] {key} NOT FOUND")
         return content_copy
-    
-    # def PrintRemovedContent(removed_content:RemovedContent):
-    #     print("RESULT OF REMOVED CONTENT")
-    #     row_result = "["
-    #     print("LIST TO BE REMOVED")
-    #     for removed_row in removed_content.removed_list:
-    #         row_result += " " + str(removed_row.row_counter) + ","
-    #         print(f"ROW {removed_row.row_counter} " + str(removed_row.removed_list))
-    #     row_result += "]"
-    #     print("ROW TO BE REMOVED")
-    #     print(row_result)
-
-    # PrintRemovedContent(removed_education_row)
 
     # Remove the removed content in the dictionary
     education_content = PopContent(removed_education_row, education_content).copy()
@@ -409,14 +394,6 @@ def gui(console_message) -> dict:
     sideproject_list_counter = reseted_sideproject_content[2]
     experience_list_counter = reseted_experience_content[2]
 
-    # print("CHECKING AFTER RESET KEY")
-    # print(heading_content)
-    # print(objective_content)
-    # print(education_content)
-    # print(sideproject_content)
-    # print(experience_content)
-    # print(skills_content)
-
     # Only Retrieve the values, not include the key
     def RetrieveValue(content:dict):
         massaged_content = []
@@ -431,7 +408,9 @@ def gui(console_message) -> dict:
     #save resume data
     try:
         file_name = values["NAME"] + "_resume"
-        f = open(file_name + ".txt", "w")
+        if file_name == "_resume":
+            file_name = "[Your Name]_resume"
+        f = open(os.getcwd() + "\\" + "output" + "\\" + file_name + ".txt", "w")
         f.write("Formal Resume Generator 2023\n")
         f.write(f"{education_row_counter.row_number_view}, {sideproject_row_counter.row_number_view}, {experience_row_counter.row_number_view}, {skills_row_counter.row_number_view}\n")
         f.write(f"{education_list_counter}\n")
