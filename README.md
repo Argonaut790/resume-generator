@@ -9,7 +9,9 @@ This Formal Resume Generator is aim to generate a common layout but formal resum
 
 * [Disclaimer](#disclaimer)
 * [Template & Samples](#template)
-* [Templates](#features)
+* [Graphical User Interface](#gui)
+* [Features](#features)
+* [Download](#download)
 * [How to Write Better Resume](#better_resume)
 * [What to write in each Components?](#write_in_component)
 * [Instruction](#instruction)
@@ -28,19 +30,45 @@ This Formal Resume Generator is aim to generate a common layout but formal resum
 
 <a name='template'></a>
 ## 📃Template & Samples
-  <pre>Template:                                                         Sample:</pre>
+<pre>Template:                                                         Sample:</pre>
 <div align="center">
   <img src="./assets/Template-1.png" width="49%">
   <img src="./assets/TSE,Hui Tung_CurriculumVitae-1.png" width="49%">
+</div>
+
+<a name='gui'></a>
+## ⚙️Graphical User Interface
+<pre>GUI:</pre>
+<div align="center">
+  <img src="./assets/gui.png" width="100%">
+</div>
+<pre>Example:</pre>
+<div align="center">
+  <img src="./assets/sample_gui.png" width="100%">
 </div>
 
 <a name='features'></a>
 ## ✨Features
 
 - Definitely Formal, no fancy stuff, just black and write
-- Provide word document for further adjustment
+- You are able to do further adjustment un the generated word docx
+- Flexible layout design
+- Tips on how to write better resume
+- Browse old data
+- Data privacy concerned
 - Easy to Use
 - Free, no charge
+
+<a name='download'></a>
+## ⬇️Download
+1. CLICK HERE TO DOWNLOAD: [Formal Resume Generator](./downloads/ResumeGenerator.zip)
+2. Unzip the folder
+3. Inside the folder, it will contain two shortcut 1) Resume Generator.exe 2) output folder
+### <ins>Resume Generator.exe</ins>
+- Click the application to start the generator
+### <ins>output folder</ins>
+- Everytime it generates, it will save two files, one is .txt, another one is .doxc which is the word document.
+- The .txt file is for browse old data usage.
 
 <a name='better_resume'></a>
 ## How to Write Better Resume
@@ -48,11 +76,13 @@ pass
 
 <a name='write_in_component'></a>
 ## What to write in each Components
-pass
+### Heading
+
+### Release
 
 <a name='instruction'></a>
 ## Instruction
-pass
+How to use the GUI
 
 <a name='requirement'></a>
 ## Requirement
