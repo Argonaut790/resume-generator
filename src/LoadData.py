@@ -75,6 +75,8 @@ def LoadData(window, education_row_counter, sideproject_row_counter, experience_
     skills_row_counter.row_counter = skills_count
     skills_row_counter.row_number_view = skills_count + 1
 
+    # Update list counter
+
     # refresh the window
     window.refresh()
     window["-EDUCATION_ROW_PANEL-"].contents_changed()

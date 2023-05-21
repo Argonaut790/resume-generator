@@ -30,7 +30,7 @@ def gui(console_message) -> dict:
     instruction_layout = [ [sg.Text('Instruction', font='Arial 14 bold')],
                             [sg.Text("This is a Formal Resume Generator, for more infomation, please refer to"),
                              sg.Text("resume-generator", tooltip="https://github.com/Argonaut790/resume-generator.git", enable_events=True, key="URL https://github.com/Argonaut790/resume-generator.git", text_color="skyblue")],
-                            [sg.Text("**Disclaimer** All The Information Won't Be Stored", text_color="red", font = ("Arial", 9))] ]
+                            [sg.Text("**Disclaimer** All The Information Will Only Be Stored Locally", text_color="red", font = ("Arial", 9))] ]
 
     intro_layout = [[sg.Column([[sg.Image(str(pathlib.Path().resolve()) + "\\assets\icon.png")]], size=(107,107)),
                       sg.Column(instruction_layout)]]
@@ -85,7 +85,7 @@ def gui(console_message) -> dict:
                 [sg.Column(experience_layout),
                 sg.Column(skills_layout)],
               [sg.Button('Generate', size=(8,1)), 
-               sg.Button('Cancel'), sg.Button("Clean", key="CLEAN"), 
+            #    sg.Button('Cancel'), sg.Button("Clean", key="CLEAN"), 
                sg.Button("Delete Data", key="DELETE_DATA" , tooltip="Delete All Input Data"), 
                sg.Text("", key="RESPONSE")],
               [sg.Column(copyright_layout)]]
@@ -245,6 +245,7 @@ def gui(console_message) -> dict:
                 window[("-EXP_ROW-", i)].update(visible=False)
             for i in range(1, skills_row_counter.row_counter + 1):
                 window[("-SKILLS_ROW-", i)].update(visible=False)
+
             # REMOVE LIST
             for i in range(1, education_row_counter.description_dict[0].list_counter + 1):
                 window[("-EDUCATION_LIST-", 0, i)].update(visible=False)
@@ -269,11 +270,11 @@ def gui(console_message) -> dict:
         # Delete Data
         if event == "DELETE_DATA":
             try:
-                if os.path.exists(last_modified_filename + ".txt"):
-                    os.remove(last_modified_filename + ".txt")
+                if os.path.exists(os.getcwd() + "\\" + "output" + "\\" + last_modified_filename + ".txt"):
+                    os.remove(os.getcwd() + "\\" + "output" + "\\" + last_modified_filename + ".txt")
                     print(f"{last_modified_filename}.txt Data deleted")
-                if os.path.exists(last_modified_filename + ".docx"):
-                    os.remove(last_modified_filename + ".docx")
+                if os.path.exists(os.getcwd() + "\\" + "output" + "\\" + last_modified_filename + ".docx"):
+                    os.remove(os.getcwd() + "\\" + "output" + "\\" + last_modified_filename + ".docx")
                     print(f"{last_modified_filename}.docx Data deleted")
                 window["RESPONSE"].update("Data deleted")
             except:
