@@ -62,8 +62,14 @@ This Formal Resume Generator is aim to generate a common layout but formal resum
 <a name='download'></a>
 ## ⬇️Download
 1. CLICK HERE TO DOWNLOAD: [Formal Resume Generator](./downloads/ResumeGenerator.zip)
+<div align="center">
+  <img src="./assets/download.png" width="80%">
+</div>
 2. Unzip the folder
 3. Inside the folder, it will contain two shortcut 1) Resume Generator.exe 2) output folder
+<div align="center">
+  <img src="./assets/unzippedfolder.png" width="80%">
+</div>
 ### <ins>Resume Generator.exe</ins>
 - Click the application to start the generator
 ### <ins>output folder</ins>
