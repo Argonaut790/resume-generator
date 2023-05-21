@@ -64,7 +64,7 @@ def create_sideproject(row_counter, row_number_view) -> list:
 def create_experience(row_counter, row_number_view) -> list:
     row = [sg.pin(
         sg.Column([[sg.Text(f"# {row_number_view}", font='Arial 11 bold'), sg.Button('Remove', size=(data.REMOVEBUTTONWIDTH,data.BUTTONHEIGHT), enable_events=True, key=("-EXP_ROW_REMOVE-", row_counter), tooltip="Delete Experience Field")],
-                [sg.Text('Name', size=(data.FIRSTTEXTWIDTH,1)), sg.InputText(key=("EXP_NAME", row_counter), size=(data.INPUTWIDTH,1)), sg.Text('Subtitle', size=(data.SECONDTEXTWIDTH,1)), sg.InputText(key=("EXP_SUBTITLE", row_counter), size=(data.INPUTWIDTH,1))],
+                [sg.Text('Title', size=(data.FIRSTTEXTWIDTH,1)), sg.InputText(key=("EXP_NAME", row_counter), size=(data.INPUTWIDTH,1)), sg.Text('Subtitle', size=(data.SECONDTEXTWIDTH,1)), sg.InputText(key=("EXP_SUBTITLE", row_counter), size=(data.INPUTWIDTH,1))],
                 [sg.Column(duration("EXP", row_counter), pad=(0,0))],
                 [sg.Column(description_layout("EXP", row_counter), pad=(0,0))]],
                 key=("-EXP_ROW-", row_counter),

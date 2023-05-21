@@ -87,7 +87,7 @@ def create_skill_object(li:list) -> list:
     if len(li) % (SKILLSFIELD-1):
         raise ValueError(f"Skill list must have {SKILLSFIELD} elements")
     skill_list = []
-    for i in range(0, len(li), SKILLSFIELD):
+    for i in range(0, len(li), SKILLSFIELD-1):
         if not li[i]:
             skill_category = "[Skill Category]"
         else:

@@ -83,12 +83,12 @@ def LoadData(window, education_row_counter, sideproject_row_counter, experience_
     window["-SKILLS_ROW_PANEL-"].contents_changed()
 
     # Turn Dictionary String to Dictionary -> data
-    heading_content = eval(lines[5].replace("'", "\"").strip())
-    objective_content = eval(lines[6].replace("'", "\"").strip())
-    education_content = eval(lines[7].replace("'", "\"").strip())
-    sideproject_content = eval(lines[8].replace("'", "\"").strip())
-    experience_content = eval(lines[9].replace("'", "\"").strip())
-    skills_content = eval(lines[10].replace("'", "\"").strip())
+    heading_content = eval(lines[5])
+    objective_content = eval(lines[6])
+    education_content = eval(lines[7])
+    sideproject_content = eval(lines[8])
+    experience_content = eval(lines[9])
+    skills_content = eval(lines[10])
 
     # Get the toggle data
     toggle_data = lines[11].strip('][\n').split(', ')
