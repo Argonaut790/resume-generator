@@ -15,6 +15,7 @@ This Formal Resume Generator is aim to generate a common layout but formal resum
 * [How to Write Better Resume](#better_resume)
 * [What to write in each Components?](#write_in_component)
 * [GUI Instruction](#instruction)
+* [Upcoming Features](#upcoming_features)
 * [Requirements](#requirement)
 * [Run Locally](#run_locally)
 * [Tech](#tech)
@@ -93,6 +94,10 @@ pass
 <a name='instruction'></a>
 ## GUI Instruction
 How to use the GUI
+
+<a name='upcoming_features'></a>
+## 👨🏻‍💻Upcoming Features
+- ✨More templates
 
 <a name='requirement'></a>
 ## Requirement
