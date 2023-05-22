@@ -3,7 +3,7 @@
 </p>
   
 ## 🔥 Formal Resume Generator
-This Formal Resume Generator is aim to generate a common layout but formal resume, since a lot of online template is too fancy and charging for some templates, therefore i built my own. 🙂
+This Formal Resume Generator is aim to generate a common layout but formal resume, since a lot of online template are too fancy and charging for some templates, therefore i built my own. 🙂
 
 # Navigation
 
@@ -14,7 +14,8 @@ This Formal Resume Generator is aim to generate a common layout but formal resum
 * [Download](#download)
 * [How to Write Better Resume](#better_resume)
 * [What to write in each Components?](#write_in_component)
-* [Instruction](#instruction)
+* [GUI Instruction](#instruction)
+* [Upcoming Features](#upcoming_features)
 * [Requirements](#requirement)
 * [Run Locally](#run_locally)
 * [Tech](#tech)
@@ -61,15 +62,19 @@ This Formal Resume Generator is aim to generate a common layout but formal resum
 
 <a name='download'></a>
 ## ⬇️Download
-1. CLICK HERE TO DOWNLOAD: [Formal Resume Generator](./downloads/ResumeGenerator.zip)
+<p>1. Click here to download: </p>
+
+[Formal Resume Generator](./downloads/ResumeGenerator.zip)
+
 <div align="center">
   <img src="./assets/download.png" width="80%">
 </div>
-2. Unzip the folder
-3. Inside the folder, it will contain two shortcut 1) Resume Generator.exe 2) output folder
+<p>2. Unzip the folder</p>
+<p>3. Inside the folder, it will contain two shortcut 1) Resume Generator.exe 2) output folder</p>
 <div align="center">
   <img src="./assets/unzippedfolder.png" width="80%">
 </div>
+
 ### <ins>Resume Generator.exe</ins>
 - Click the application to start the generator
 ### <ins>output folder</ins>
@@ -87,8 +92,12 @@ pass
 ### Release
 
 <a name='instruction'></a>
-## Instruction
+## GUI Instruction
 How to use the GUI
+
+<a name='upcoming_features'></a>
+## 👨🏻‍💻Upcoming Features
+- ✨More templates
 
 <a name='requirement'></a>
 ## Requirement
