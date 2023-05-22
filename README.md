@@ -13,8 +13,8 @@ This Formal Resume Generator is aim to generate a common layout but formal resum
 * [Features](#features)
 * [Download](#download)
 * [How to Write Better Resume](#better_resume)
-* [What to write in each Components?](#write_in_component)
 * [GUI Instruction](#instruction)
+* [What to write in each Components?](#write_in_component)
 * [Upcoming Features](#upcoming_features)
 * [Requirements](#requirement)
 * [Run Locally](#run_locally)
@@ -67,12 +67,12 @@ This Formal Resume Generator is aim to generate a common layout but formal resum
 [Formal Resume Generator](./downloads/ResumeGenerator.zip)
 
 <div align="center">
-  <img src="./assets/download.png" width="80%">
+  <img src="./assets/download.png" width="90%">
 </div>
 <p>2. Unzip the folder</p>
 <p>3. Inside the folder, it will contain two shortcut 1) Resume Generator.exe 2) output folder</p>
 <div align="center">
-  <img src="./assets/unzippedfolder.png" width="80%">
+  <img src="./assets/unzippedfolder.png" width="90%">
 </div>
 
 ### <ins>Resume Generator.exe</ins>
@@ -85,15 +85,47 @@ This Formal Resume Generator is aim to generate a common layout but formal resum
 ## How to Write Better Resume
 pass
 
+<a name='instruction'></a>
+## GUI Instruction
+### How to use the GUI
+- You can checkout this github link by clikcing "resume-generator" to see the instruction/guideline.
+- Top left hand side you can browse the old generated .txt file and load the old data.
+- Top right hand side you can toggle to show/hide the components, also you are able to pick whether to show side project/experience first.
+<div align="center">
+  <img src="./assets/instruction1.png" width="90%">
+</div>
+
+- After you clicked the "Generate" button, the generator will output 2 files including the word and .txt documents. The .txt file is for load old data purpose. *Ensure that you close the docx before you generate it
+- "[Your Name]" will be replaced with what you filled in, if you didn't fill in, it will be the default value.
+<div align="center">
+  <img src="./assets/generate.png" width="90%">
+</div>
+
+- Inside the generator, there include 6 major components, it's fine if u didn't fill in, it still can generate it.
+- It's flexible for you to fill in.
+<div align="center">
+  <img src="./assets/instruction2.png" width="90%">
+</div>
+
+- For those components except Heading and Objective, you can add the row field and description list field as well as the remove.
+- The duration you can select the month and input the yaer, if the component is still running till now, you can press the "Present" button, the shadowed field is for your preview. 
+<div align="center">
+  <img src="./assets/instruction3.png" width="90%">
+</div>
+
 <a name='write_in_component'></a>
 ## What to write in each Components
 ### Heading
 
-### Release
+### Objective
 
-<a name='instruction'></a>
-## GUI Instruction
-How to use the GUI
+### Education
+
+### Side Project
+
+### Experience
+
+### Skills
 
 <a name='upcoming_features'></a>
 ## 👨🏻‍💻Upcoming Features
